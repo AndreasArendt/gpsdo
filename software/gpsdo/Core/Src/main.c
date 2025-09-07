@@ -163,27 +163,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1) {
 
-		while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY) {
-			asm volatile("nop");
-		}
-
-		for (float angle = 0; angle <= 2 * M_PI; angle += 0.01) {
-			uint16_t value = (uint16_t) ((sinf(angle) + 1) * 32767.5);
-
-			// Convert to two bytes for transmission
-			uint8_t data[3];
-			data[0] = 0x30; // Command = 0011 (Write to DAC), Addr = 0000 → 0x30
-			data[1] = (uint8_t)(value >> 8);   // MSB
-			data[2] = (uint8_t)(value & 0xFF); // LSB
-
-			HAL_I2C_Master_Transmit_DMA(&hi2c1, (0x4C << 1), data, 3);
-
-			while (HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY) {
-				asm volatile("nop");
-			}
-		}
-		//HAL_Delay(50);
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
