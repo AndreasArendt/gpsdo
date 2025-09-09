@@ -3361,7 +3361,7 @@
 	)
 	(wire
 		(pts
-			(xy 100.33 73.66) (xy 100.33 76.2)
+			(xy 100.33 74.93) (xy 100.33 76.2)
 		)
 		(stroke
 			(width 0)
@@ -5139,7 +5139,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 100.33 71.12 0)
+		(at 100.33 72.39 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5147,7 +5147,7 @@
 		(dnp no)
 		(uuid "44f1e655-29f9-484c-8e05-220cafbb3b80")
 		(property "Reference" "C8"
-			(at 100.838 74.676 0)
+			(at 100.838 75.946 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5156,7 +5156,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 100.838 72.898 0)
+			(at 100.838 74.168 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5165,7 +5165,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0201_0603Metric_Pad0.64x0.40mm_HandSolder"
-			(at 100.33 71.12 0)
+			(at 100.33 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5174,7 +5174,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 100.33 71.12 0)
+			(at 100.33 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5183,7 +5183,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 100.33 71.12 0)
+			(at 100.33 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
