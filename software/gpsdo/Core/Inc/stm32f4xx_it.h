@@ -53,13 +53,12 @@ void BusFault_Handler(void);
 void UsageFault_Handler(void);
 void DebugMon_Handler(void);
 void DMA1_Stream1_IRQHandler(void);
-void DMA1_Stream4_IRQHandler(void);
-void TIM2_IRQHandler(void);
-void TIM3_IRQHandler(void);
+void TIM1_CC_IRQHandler(void);
+void TIM4_IRQHandler(void);
 void I2C1_EV_IRQHandler(void);
 void I2C1_ER_IRQHandler(void);
+void TIM5_IRQHandler(void);
 void DMA2_Stream0_IRQHandler(void);
-void DMA2_Stream1_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
