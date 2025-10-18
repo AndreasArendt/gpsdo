@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <math.h>
+#include "pps.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,17 +56,29 @@ TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim5;
 
-/* Definitions for tsk_controllerT */
-osThreadId_t tsk_controllerTHandle;
+/* Definitions for tsk_controller */
+osThreadId_t tsk_controllerHandle;
 uint32_t controllerTaskBuffer[ 128 ];
 osStaticThreadDef_t controllerTaskControlBlock;
-const osThreadAttr_t tsk_controllerT_attributes = {
-  .name = "tsk_controllerT",
+const osThreadAttr_t tsk_controller_attributes = {
+  .name = "tsk_controller",
   .cb_mem = &controllerTaskControlBlock,
   .cb_size = sizeof(controllerTaskControlBlock),
   .stack_mem = &controllerTaskBuffer[0],
   .stack_size = sizeof(controllerTaskBuffer),
   .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for tsk_usb */
+osThreadId_t tsk_usbHandle;
+uint32_t usbTaskBuffer[ 128 ];
+osStaticThreadDef_t usbTaskControlBlock;
+const osThreadAttr_t tsk_usb_attributes = {
+  .name = "tsk_usb",
+  .cb_mem = &usbTaskControlBlock,
+  .cb_size = sizeof(usbTaskControlBlock),
+  .stack_mem = &usbTaskBuffer[0],
+  .stack_size = sizeof(usbTaskBuffer),
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* USER CODE BEGIN PV */
 
@@ -82,6 +95,7 @@ static void MX_ADC1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM2_Init(void);
 void controllerTask(void *argument);
+void usbTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -130,7 +144,9 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-	HAL_Delay(1000);
+  MX_USB_DEVICE_Init();
+
+  pps_init();
 
   /* USER CODE END 2 */
 
@@ -154,8 +170,11 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of tsk_controllerT */
-  tsk_controllerTHandle = osThreadNew(controllerTask, NULL, &tsk_controllerT_attributes);
+  /* creation of tsk_controller */
+  tsk_controllerHandle = osThreadNew(controllerTask, NULL, &tsk_controller_attributes);
+
+  /* creation of tsk_usb */
+  tsk_usbHandle = osThreadNew(usbTask, NULL, &tsk_usb_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -566,6 +585,24 @@ __weak void controllerTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_usbTask */
+/**
+* @brief Function implementing the tsk_usb thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_usbTask */
+__weak void usbTask(void *argument)
+{
+  /* USER CODE BEGIN usbTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END usbTask */
 }
 
 /**
