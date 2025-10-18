@@ -6,6 +6,8 @@ extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim5;
 
+char msg[] = "Hello from STM32 via USB CDC!\r\n";
+
 void controllerTask(void *argument) {
 
 	HAL_TIM_Base_Start(&htim2);   // start high word first
@@ -13,8 +15,12 @@ void controllerTask(void *argument) {
 
 	HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
 
+	MX_USB_DEVICE_Init();
+
 	while (1) {
-		osDelay(1);
+        CDC_Transmit_FS((uint8_t*)msg, strlen(msg));
+
+		osDelay(1000);
 	}
 }
 
@@ -46,6 +52,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
         		delta = now - last_PPS;
         	else
         		delta = last_PPS - now;
+
+            CDC_Transmit_FS((uint8_t*)msg, strlen(msg));
 
         	asm("nop");
         }
