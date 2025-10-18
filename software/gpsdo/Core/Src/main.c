@@ -70,7 +70,7 @@ const osThreadAttr_t tsk_controller_attributes = {
 };
 /* Definitions for tsk_usb */
 osThreadId_t tsk_usbHandle;
-uint32_t usbTaskBuffer[ 128 ];
+uint32_t usbTaskBuffer[ 256 ];
 osStaticThreadDef_t usbTaskControlBlock;
 const osThreadAttr_t tsk_usb_attributes = {
   .name = "tsk_usb",
@@ -144,9 +144,8 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-  MX_USB_DEVICE_Init();
-
   pps_init();
+  usb_init();
 
   /* USER CODE END 2 */
 

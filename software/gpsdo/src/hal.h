@@ -10,6 +10,7 @@
 
 #include "cmsis_os.h"
 #include "stm32f4xx_hal.h"
+#include "message_buffer.h"
 
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
