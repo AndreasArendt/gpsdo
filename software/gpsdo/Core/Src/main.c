@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "pps.h"
+#include "usb.h"
 
 /* USER CODE END Includes */
 
