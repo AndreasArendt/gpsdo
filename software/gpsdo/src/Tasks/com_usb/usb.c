@@ -8,7 +8,6 @@
 #include <stdarg.h>
 #include <queue.h>
 
-#define USB_TX_BUFFER_SIZE 512   // bytes
 #define USB_MSG_MAX_SIZE   128   // max message size per send
 
 struct {

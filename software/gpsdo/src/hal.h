@@ -13,6 +13,8 @@
 #include "message_buffer.h"
 #include "usbd_def.h"
 
+extern uint16_t adc_dma_buffer[2];  // CH1, CH3 [voltage, temperature]
+
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim5;
