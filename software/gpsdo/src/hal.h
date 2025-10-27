@@ -23,4 +23,6 @@ extern ADC_HandleTypeDef hadc1;
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
+extern SPI_HandleTypeDef hspi1;
+
 #endif /* HAL_H_ */
