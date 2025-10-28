@@ -56,11 +56,9 @@ void controllerTask(void *argument) {
 
 	while (1) {
 
-		toggle_led_red();
+		//toggle_led_red();
 
 		DAC_SetVoltage(volt);
 		osDelay(1000);
-
-		toggle_led_orange();
 	}
 }

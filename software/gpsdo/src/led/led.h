@@ -10,11 +10,11 @@
 
 void toggle_led_red();
 void set_led_red();
-void clear_led_red();
+void reset_led_red();
 
 void toggle_led_orange();
 void set_led_orange();
-void clear_led_orange();
+void reset_led_orange();
 
 
 #endif

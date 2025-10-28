@@ -24,9 +24,9 @@ void set_led_red()
 	HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, GPIO_PIN_RESET);
 }
 
-void clear_led_red()
+void reset_led_red()
 {
-	HAL_GPIO_SetPin(LED_RED_PORT, LED_RED_PIN, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, GPIO_PIN_SET);
 }
 
 
@@ -40,7 +40,7 @@ void set_led_orange()
 	HAL_GPIO_WritePin(LED_ORANGE_PORT, LED_ORANGE_PIN, GPIO_PIN_RESET);
 }
 
-void clear_led_orange()
+void reset_led_orange()
 {
-	HAL_GPIO_SetPin(LED_ORANGE_PORT, LED_ORANGE_PIN, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_ORANGE_PORT, LED_ORANGE_PIN, GPIO_PIN_SET);
 }

@@ -8,6 +8,7 @@
 #include "pps.h"
 #include "hal.h"
 #include "usb.h"
+#include "led.h"
 
 static uint32_t last_PPS = 0;
 
@@ -35,6 +36,7 @@ char msg[32];
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
 		uint32_t now = Read625kHzCount();
+		toggle_led_orange();
 
 		if (last_PPS != 0) {
 			uint32_t delta =
