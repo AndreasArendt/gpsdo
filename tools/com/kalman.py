@@ -56,11 +56,20 @@ class KalmanFilter:
 
         # Kalman update
         S = self.H.dot(P_pred).dot(self.H.T) + self.R
+        
         K = P_pred.dot(self.H.T) / S  # 2x1
         y = measurement - (self.H.dot(x_pred))[0]
-        self.x = x_pred + (K.flatten() * y)
-        self.P = (np.eye(2) - K.dot(self.H)).dot(P_pred)
 
+        maha = (y*y) / S
+        if maha > 9.21:  # chi2 1 DOF ~ 99%
+            # ignore update or inflate R for this step
+            print("KalmanFilter: Mahalanobis distance too high, inflating R")
+            self.R *= 10.0
+        
+        self.x = x_pred + (K.flatten() * y)
+        I = np.eye(2)
+        self.P = (I - K.dot(self.H)).dot(P_pred).dot((I - K.dot(self.H)).T) + K.dot(self.R).dot(K.T)
+        
         freq = float(self.x[0])
         drift = float(self.x[1])
 
