@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import matplotlib.pyplot as plt
 
 try:
     from .kalman import KalmanFilter
@@ -13,8 +14,11 @@ except ImportError:
 
 filename = r"251028.log"
 
+freq_offset_Hz = []
+drift_Hz_per_s = []
+
 try:
-    kf = KalmanFilter()
+    kf = KalmanFilter(output_alpha=0.2)
     with open(filename) as file:
         while line := file.readline():
             _delta_re = re.compile(r"measurement=(\d+(?:\.\d+)?)", re.IGNORECASE)
@@ -29,7 +33,19 @@ try:
             else:
                 continue
 
-            filtered = kf.update(meas)            
-            print(f"measurement={meas} filtered={filtered}")
+            filtered = kf.update(meas)       
+            freq_offset_Hz.append(filtered["freq_offset_Hz"])
+            drift_Hz_per_s.append(filtered["drift_Hz_per_s"])
+
+            #print(f"measurement={meas} filtered={filtered}")
 except KeyboardInterrupt:
     print("stopping read loop by user")
+
+plt.subplot(2, 1, 1)
+plt.plot(freq_offset_Hz)
+plt.ylabel('freq_offset_Hz')
+
+plt.subplot(2, 1, 2)
+plt.plot(drift_Hz_per_s)
+plt.ylabel('drift_Hz_per_s')
+plt.show()

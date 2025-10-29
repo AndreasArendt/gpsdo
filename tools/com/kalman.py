@@ -18,7 +18,7 @@ class KalmanFilter:
 
         # --- Tune these for more smoothing ---
         # Make Q smaller -> filter assumes slower state evolution -> smoother
-        self.Q = np.diag([0.1, 1e-4])    # ← more smoothing than prior (was [1.0,0.01])
+        self.Q = np.diag([0.00001, 1e-9])    # ← more smoothing than prior (was [1.0,0.01])
         # Measurement quantization step in Hz (per-1s measurement)
         s = (self.f_counter / self.N0)   # Hz per counter tick; here ≈1.0
         s_total = 16.0   # your previously used step for 10 MHz example; keep if appropriate
@@ -27,10 +27,7 @@ class KalmanFilter:
         R0 = (s_total**2) / 12.0
         # After averaging M independent samples, variance reduces by ~M
         self.R = R0 / max(1, self.M)
-
-        # Optionally inflate R if you want an even slower response:
-        # self.R *= 5.0
-
+        
         # init
         self.x = np.array([0.0, 0.0])
         self.P = np.eye(2) * 10.0
