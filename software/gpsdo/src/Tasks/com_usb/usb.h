@@ -7,6 +7,8 @@ extern MessageBufferHandle_t usbTxMessageBuffer;
 
 void usb_init();
 
+void usb_receive_isr(uint8_t* pbuf, uint32_t *Len);
+
 void usb_printf(const char *fmt, ...);
 void usb_printf_ISR(const char *fmt, ...);
 
