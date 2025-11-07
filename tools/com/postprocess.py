@@ -12,7 +12,7 @@ except ImportError:
         sys.path.insert(0, pkg_root)
     from gpsdo.tools.com.kalman import KalmanFilter    
 
-filename = r"251028.log"
+filename = r"reader1.log"
 
 freq_offset_Hz = []
 drift_Hz_per_s = []
