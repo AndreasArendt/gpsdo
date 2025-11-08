@@ -102,8 +102,8 @@ float filter_ema(float x, float prev_y, float alpha) {
 
 // return true, if value is considered good
 bool filter_pre_check(uint32_t delta) {
-	return ((delta < (EXPECTED_CTR + MAX_JITTER))
-			&& (delta > (EXPECTED_CTR - MAX_JITTER)));
+	return ((delta <= (EXPECTED_CTR + MAX_JITTER))
+			&& (delta >= (EXPECTED_CTR - MAX_JITTER)));
 }
 
 void filter_correct(float delta) {

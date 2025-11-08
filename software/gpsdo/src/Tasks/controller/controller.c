@@ -61,8 +61,7 @@ static const float Kp = 0.03f;
 static const float Ki = 0.0002f;
 static const float Kd = 0.006f;
 
-float control(float freq_offset, float freq_drift, float dt)
-{
+float control(float freq_offset, float freq_drift, float dt) {
 	static float f_integral = 0.0f;
 	f_integral += freq_offset * dt;
 
@@ -70,11 +69,12 @@ float control(float freq_offset, float freq_drift, float dt)
 	float i = Ki * f_integral;
 	float d = Kd * freq_drift;
 
-	float v_out = p+i+d;
+	float v_out = p + i + d;
 
-	if(v_out > V_Max) v_out = V_Max;
-	if(v_out < V_Min) v_out = V_Min;
-
+	if (v_out > V_Max)
+		v_out = V_Max;
+	if (v_out < V_Min)
+		v_out = V_Min;
 
 	return v_out;
 }
@@ -91,27 +91,23 @@ void controllerTask(void *argument) {
 		toggle_led_orange();
 		uint32_t delta = pps_get_delta();
 
-		if(delta > 0)
-		{
-			filter_step(delta);
-			float freq_off_Hz = filter_get_frequency_offset_Hz();
-			float freq_drift_HzDs = filter_get_frequency_drift_HzDs();
+		filter_step(delta);
+		float freq_off_Hz = filter_get_frequency_offset_Hz();
+		float freq_drift_HzDs = filter_get_frequency_drift_HzDs();
 
-			float volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
-			DAC_SetVoltage(volt);
+		float volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
+		DAC_SetVoltage(volt);
 
-			usb_printf("delta: %lu\r\n", (unsigned long) delta);
+		usb_printf("delta: %lu\r\n", (unsigned long) delta);
 
-			float freq_off = filter_get_frequency_offset_Hz();
-			int freq_off_frac = fabsf(
-					(int) ((freq_off - (int) freq_off) * 1000.0f));
+		float freq_off = filter_get_frequency_offset_Hz();
+		int freq_off_frac = fabsf(
+				(int) ((freq_off - (int) freq_off) * 1000.0f));
 
-			usb_printf("freq_off: %d.%d\r\n", (int) freq_off, freq_off_frac);
+		usb_printf("freq_off: %d.%d\r\n", (int) freq_off, freq_off_frac);
 
-			int volt_frac = fabsf(
-					(int) ((volt - (int) volt) * 1000.0f));
+		int volt_frac = fabsf((int) ((volt - (int) volt) * 1000.0f));
 
-			usb_printf("volt_set: %d.%d\r\n", (int) volt, volt_frac);
-		}
+		usb_printf("volt_set: %d.%d\r\n", (int) volt, volt_frac);
 	}
 }
