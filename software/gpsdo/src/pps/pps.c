@@ -36,21 +36,13 @@ static uint32_t Read625kHzCount(void) {
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
-    BaseType_t xHigherPriorityTaskWoken;
-
 	if (htim->Instance == TIM5) {
 		uint32_t now = Read625kHzCount();
 
-		toggle_led_orange();
-
 		if (last_PPS != 0) {
 			PPS_delta = now - last_PPS;
-
-            xSemaphoreGiveFromISR(xPPSSemaphoreHandle, &xHigherPriorityTaskWoken);
-            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-			//osSemaphoreRelease(xPPSSemaphoreHandle);
+			osSemaphoreRelease(xPPSSemaphoreHandle);
 		}
-
 		last_PPS = now;
 	}
 }

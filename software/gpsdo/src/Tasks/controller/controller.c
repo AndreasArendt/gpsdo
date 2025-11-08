@@ -57,9 +57,9 @@ static const float V_Max = 3.0;
 static const float V_Min = 0.5;
 static const float V_Mid = (V_Max - V_Min) / 2;
 
-static const float Kp = 0.002f;
+static const float Kp = 0.03f;
 static const float Ki = 0.0002f;
-static const float Kd = 0.0004f;
+static const float Kd = 0.006f;
 
 float control(float freq_offset, float freq_drift, float dt)
 {
@@ -88,6 +88,7 @@ void controllerTask(void *argument) {
 
 	while (1) {
 		osSemaphoreAcquire(xPPSSemaphoreHandle, osWaitForever);
+		toggle_led_orange();
 		uint32_t delta = pps_get_delta();
 
 		if(delta > 0)
