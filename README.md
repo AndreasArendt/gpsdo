@@ -17,10 +17,10 @@ The first hardware prototype is currently being tested; all findings are documen
 
 # Roadmap
 
-✅ Improve hardware based on findings from V2 prototype
-🔄 Integrate the GNSS receiver on-board for a fully standalone GPSDO
-⚙️ Fine-tune the control loop and filtering algorithms
-📊 Benchmark the true performance against reference standards
+✅ Improve hardware based on findings from V2 prototype  
+🔄 Integrate the GNSS receiver on-board for a fully standalone GPSDO  
+⚙️ Fine-tune the control loop and filtering algorithms  
+📊 Benchmark the true performance against reference standards  
 
 # Contributing
 Contributions are welcome! Whether it's hardware design suggestions, software improvements, or analysis scripts, feel free to open an issue or a pull request.
