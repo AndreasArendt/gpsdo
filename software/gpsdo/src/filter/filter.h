@@ -13,9 +13,12 @@
 
 void filter_init(void);
 void filter_predict(void);
-void filter_correct(uint32_t delta);
+void filter_correct(float delta);
+
+void filter_step(uint32_t delta);
 
 bool filter_pre_check(uint32_t delta);
+float filter_ema(float x, float prev_y, float alpha);
 
 float filter_get_frequency_offset_Hz();
 float filter_get_frequency_drift_HzDs();

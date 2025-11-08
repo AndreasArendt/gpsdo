@@ -95,16 +95,21 @@ void filter_predict(void) {
 	arm_mat_add_f32(&temp_2x2b, &Q, &P);
 }
 
+// exponential moving average
+float filter_ema(float x, float prev_y, float alpha) {
+    return alpha * x + (1 - alpha) * prev_y;
+}
+
 // return true, if value is considered good
 bool filter_pre_check(uint32_t delta) {
 	return ((delta < (EXPECTED_CTR + MAX_JITTER))
 			&& (delta > (EXPECTED_CTR - MAX_JITTER)));
 }
 
-void filter_correct(uint32_t delta) {
+void filter_correct(float delta) {
 	// Convert count delta to frequency deviation
 	const float scale = (F_OSC_HZ / EXPECTED_CTR);
-	float z = ((float) delta - EXPECTED_CTR) * scale;
+	float z = (delta - EXPECTED_CTR) * scale;
 
 	// y = z - H * X_pred (optimized)
 	float y = z - X_pred.pData[0];
@@ -132,6 +137,22 @@ void filter_correct(uint32_t delta) {
 	// copy results
 	mat_copy_f32(&temp_2x1a, &X); // copy result back in X
 	mat_copy_f32(&temp_2x2a, &P); // copy result back in P
+}
+
+void filter_step(uint32_t delta)
+{
+	static float filtered_delta = 0.0f;
+	filter_predict();
+
+	if (filtered_delta == 0.0f)
+		filtered_delta = delta;
+
+	// do correction only if considered healthy
+	if(filter_pre_check(delta))
+	{
+		filtered_delta = filter_ema(delta, filtered_delta, 0.2);
+		filter_correct(filtered_delta);
+	}
 }
 
 /* Accessors */
