@@ -26,11 +26,13 @@
 #include "pps.h"
 #include "usb.h"
 #include "led.h"
+#include "hal.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 typedef StaticTask_t osStaticThreadDef_t;
+typedef StaticSemaphore_t osStaticSemaphoreDef_t;
 /* USER CODE BEGIN PTD */
 
 /* USER CODE END PTD */
@@ -94,8 +96,16 @@ const osThreadAttr_t tsk_manager_attributes = {
   .stack_size = sizeof(tsk_managerBuffer),
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for xPPSSemaphore */
+osSemaphoreId_t xPPSSemaphoreHandle;
+osStaticSemaphoreDef_t xPPSSemaphoreControlBlock;
+const osSemaphoreAttr_t xPPSSemaphore_attributes = {
+  .name = "xPPSSemaphore",
+  .cb_mem = &xPPSSemaphoreControlBlock,
+  .cb_size = sizeof(xPPSSemaphoreControlBlock),
+};
 /* USER CODE BEGIN PV */
-
+/* Definitions for sem_IMUdataReceived */
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -113,7 +123,7 @@ void usbTask(void *argument);
 void mangerTask(void *argument);
 
 /* USER CODE BEGIN PFP */
-
+uint8_t hal_initialized = 0;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -129,16 +139,14 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+ HAL_Init();
 
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -158,7 +166,6 @@ int main(void)
   MX_TIM2_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-	pps_init();
 	usb_init();
 
 	HAL_NVIC_DisableIRQ(DMA2_Stream0_IRQn);  // disable ADC1 DMA interrupt
@@ -175,6 +182,10 @@ int main(void)
   /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* creation of xPPSSemaphore */
+  xPPSSemaphoreHandle = osSemaphoreNew(1, 1, &xPPSSemaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */

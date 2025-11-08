@@ -1,6 +1,9 @@
 #include "controller.h"
 #include "hal.h"
 #include "led.h"
+#include "filter.h"
+#include "pps.h"
+#include "usb.h"
 
 #include <math.h>
 
@@ -10,14 +13,14 @@
 #define DAC_SYNC_PORT GPIOA
 #define DAC_SYNC_PIN GPIO_PIN_15
 
+#define DAC_VREF 4.096f
+
 void DAC_Select() {
 	HAL_GPIO_WritePin(DAC_CS_GPIO_Port, DAC_CS_Pin, GPIO_PIN_RESET);
 }
 void DAC_Unselect() {
 	HAL_GPIO_WritePin(DAC_CS_GPIO_Port, DAC_CS_Pin, GPIO_PIN_SET);
 }
-
-#define DAC_VREF 4.096f  // adjust to your actual VREF
 
 void DAC_AD5541A_set_value(uint16_t value) {
 	if (value >= 48000)
@@ -51,14 +54,28 @@ void DAC_SetVoltage(float voltage) {
 }
 
 void controllerTask(void *argument) {
+	while (!hal_initialized)
+		osDelay(100);
 
 	float volt = 0.0f;
+	filter_init();
+	DAC_SetVoltage(volt);
 
 	while (1) {
+		osSemaphoreAcquire(xPPSSemaphoreHandle, osWaitForever);
+		uint32_t delta = pps_get_delta();
 
-		//toggle_led_red();
+		if(delta > 0)
+		{
+			filter_predict();
+			filter_correct(delta);
+			usb_printf("delta: %lu\r\n", (unsigned long) delta);
 
-		DAC_SetVoltage(volt);
-		osDelay(1000);
+			float freq_off = filter_get_frequency_offset_Hz();
+			int freq_off_frac = fabsf(
+					(int) ((freq_off - (int) freq_off) * 1000.0f));
+
+			usb_printf("freq_off: %d.%d\r\n", (int) freq_off, freq_off_frac);
+		}
 	}
 }

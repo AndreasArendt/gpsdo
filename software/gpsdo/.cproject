@@ -54,6 +54,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Tasks/manager}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ringbuffer}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/led}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/filter}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Source\MatrixFunctions&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.1939340893" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -67,6 +71,7 @@
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1084144142" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../Core/Inc"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Source\MatrixFunctions&quot;"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
@@ -86,6 +91,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Tasks/com_usb}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Tasks/manager}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/led}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/filter}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include\dsp&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.621430956" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -172,6 +180,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Tasks/manager}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ringbuffer}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/led}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/filter}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Source\MatrixFunctions&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.793684250" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -204,6 +216,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Tasks/manager}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ringbuffer}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/led}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/filter}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Source\MatrixFunctions&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.234048784" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>

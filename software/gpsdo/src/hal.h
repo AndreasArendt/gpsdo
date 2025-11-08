@@ -14,6 +14,7 @@
 #include "usbd_def.h"
 
 extern uint16_t adc_dma_buffer[2];  // CH1, CH3 [voltage, temperature]
+extern uint8_t hal_initialized;
 
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
@@ -24,5 +25,7 @@ extern ADC_HandleTypeDef hadc1;
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
 extern SPI_HandleTypeDef hspi1;
+
+extern osSemaphoreId_t xPPSSemaphoreHandle;
 
 #endif /* HAL_H_ */

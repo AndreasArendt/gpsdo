@@ -7,6 +7,7 @@
 
 #include "hal.h"
 #include "usb.h"
+#include "pps.h"
 
 #include <math.h>
 
@@ -34,6 +35,9 @@ float vref_ocxo_calc(uint16_t adc_value){
 }
 
 void mangerTask(void *argument) {
+	pps_init();
+
+	hal_initialized = 1;
 
 	for (;;) {
 
@@ -46,10 +50,10 @@ void mangerTask(void *argument) {
 		float temperature__C = ntc_calc_temperature(ch3);
 		int temperature_frac = fabsf((int) ((temperature__C - (int) temperature__C) * 100.0f));
 
-		//usb_printf("Temperature: %d.%d\r\n", (int) temperature__C, temperature_frac);
+		usb_printf("Temperature: %d.%d\r\n", (int) temperature__C, temperature_frac);
 		usb_printf("Voltage: %d.%d\r\n", (int) voltage__V, voltage_frac);
 
-		osDelay(100);
+		osDelay(1000);
 	}
 }
 

@@ -29,4 +29,36 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Core/Src/arm_mat_add_f32.c</name>
+			<type>1</type>
+			<location>C:/Users/andia/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/CMSIS/DSP/Source/MatrixFunctions/arm_mat_add_f32.c</location>
+		</link>
+		<link>
+			<name>Core/Src/arm_mat_init_f32.c</name>
+			<type>1</type>
+			<location>C:/Users/andia/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/CMSIS/DSP/Source/MatrixFunctions/arm_mat_init_f32.c</location>
+		</link>
+		<link>
+			<name>Core/Src/arm_mat_mult_f32.c</name>
+			<type>1</type>
+			<location>C:/Users/andia/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/CMSIS/DSP/Source/MatrixFunctions/arm_mat_mult_f32.c</location>
+		</link>
+		<link>
+			<name>Core/Src/arm_mat_scale_f32.c</name>
+			<type>1</type>
+			<location>C:/Users/andia/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/CMSIS/DSP/Source/MatrixFunctions/arm_mat_scale_f32.c</location>
+		</link>
+		<link>
+			<name>Core/Src/arm_mat_sub_f32.c</name>
+			<type>1</type>
+			<location>C:/Users/andia/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/CMSIS/DSP/Source/MatrixFunctions/arm_mat_sub_f32.c</location>
+		</link>
+		<link>
+			<name>Core/Src/arm_mat_trans_f32.c</name>
+			<type>1</type>
+			<location>C:/Users/andia/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/CMSIS/DSP/Source/MatrixFunctions/arm_mat_trans_f32.c</location>
+		</link>
+	</linkedResources>
 </projectDescription>

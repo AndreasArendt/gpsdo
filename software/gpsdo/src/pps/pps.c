@@ -10,7 +10,8 @@
 #include "usb.h"
 #include "led.h"
 
-static uint32_t last_PPS = 0;
+static volatile uint32_t last_PPS = 0;
+static volatile uint32_t PPS_delta = 0;
 
 void pps_init() {
 	HAL_TIM_Base_Start(&htim2);   // start high word first
@@ -32,19 +33,24 @@ static uint32_t Read625kHzCount(void) {
 	return (high << 16) | low;
 }
 
-char msg[32];
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
+    __disable_irq();
 	if (htim->Instance == TIM5) {
 		uint32_t now = Read625kHzCount();
+
 		toggle_led_orange();
 
 		if (last_PPS != 0) {
-			uint32_t delta =
-					(now > last_PPS) ? (now - last_PPS) : (last_PPS - now);
+			PPS_delta = now - last_PPS;
 
-			usb_printf_ISR("delta: %lu\r\n", (unsigned long)delta);
+			osSemaphoreRelease(xPPSSemaphoreHandle);
 		}
 
 		last_PPS = now;
 	}
+    __enable_irq();
+}
+
+uint32_t pps_get_delta() {
+	return PPS_delta;
 }
