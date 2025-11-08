@@ -9,9 +9,11 @@ class RealtimePlotter:
         self.timestamps = {
             'filter': deque(maxlen=window_size),
             'volt_set': deque(maxlen=window_size),
-            'volt_meas': deque(maxlen=window_size)
+            'volt_meas': deque(maxlen=window_size),
+            'freq_offset_hw': deque(maxlen=window_size)            
         }
         self.freq_offsets = deque(maxlen=window_size)
+        self.freq_offsets_hw = deque(maxlen=window_size)
         self.drifts = deque(maxlen=window_size)
         self.volt_set = deque(maxlen=window_size)
         self.volt_meas = deque(maxlen=window_size)
@@ -21,6 +23,7 @@ class RealtimePlotter:
         
         # Initialize plot lines
         self.line_filtered, = self.ax1.plot([], [], 'b-', label='Frequency Offset')
+        self.line_freq_offset_hw, = self.ax1.plot([], [], 'r-', label='Frequency Offset (HW)')
         self.line_drift, = self.ax2.plot([], [], 'g-', label='Frequency Drift')
         self.line_volt_set, = self.ax3.plot([], [], 'y-', label='Voltage Set')
         self.line_volt_meas, = self.ax3.plot([], [], 'm-', label='Voltage Measured')
@@ -48,7 +51,7 @@ class RealtimePlotter:
     def update_filter(self, timestamp, filtered_data):
         """Update filter-related plots"""
         self.timestamps['filter'].append(timestamp)
-        self.freq_offsets.append(filtered_data['freq_offset_Hz'])
+        self.freq_offsets.append(filtered_data['freq_offset_Hz'])        
         self.drifts.append(filtered_data['drift_Hz_per_s'])
         
         x_data = list(self.timestamps['filter'])
@@ -56,13 +59,20 @@ class RealtimePlotter:
         self.line_filtered.set_data(x_data, self.freq_offsets)
         self.line_drift.set_data(x_data, self.drifts)
         
-        for ax in [self.ax1, self.ax2]:
-            ax.relim()
-            ax.autoscale_view()
-        
-        self.fig.canvas.draw()
-        self.fig.canvas.flush_events()
+        self.update_all_plots()
     
+    def update_freq_offset_hw(self, timestamp, freq_offset):            
+        """Update Frequency offset from Hardware Filter"""
+        self.timestamps['freq_offset_hw'].append(timestamp)
+        self.freq_offsets_hw.append(freq_offset)
+        
+        self.line_freq_offset_hw.set_data(
+            list(self.timestamps['freq_offset_hw']), 
+            list(self.freq_offsets_hw)
+        )
+        
+        self.update_all_plots()
+
     def update_volt_set(self, timestamp, volt_set):
         """Update voltage set plot"""
         self.timestamps['volt_set'].append(timestamp)
@@ -73,10 +83,7 @@ class RealtimePlotter:
             list(self.volt_set)
         )
         
-        self.ax3.relim()
-        self.ax3.autoscale_view()
-        self.fig.canvas.draw()
-        self.fig.canvas.flush_events()
+        self.update_all_plots()
 
     def update_volt_meas(self, timestamp, volt_meas):
         """Update voltage measured plot"""
@@ -88,7 +95,12 @@ class RealtimePlotter:
             list(self.volt_meas)
         )
         
-        self.ax3.relim()
-        self.ax3.autoscale_view()
+        self.update_all_plots()
+
+    def update_all_plots(self):
+        for ax in [self.ax1, self.ax2, self.ax3]:
+            ax.relim()
+            ax.autoscale_view()
+        
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()

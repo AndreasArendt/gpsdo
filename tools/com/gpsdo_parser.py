@@ -7,12 +7,14 @@ class GpsdoData:
     delta: Optional[float] = None
     voltage_set: Optional[float] = None
     voltage_measured: Optional[float] = None
+    freq_offset: Optional[float] = None
 
 class GpsdoParser:
     _patterns = {
         'delta': re.compile(r"delta\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE),
         'volt_set': re.compile(r"volt_set\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE),
-        'volt_meas': re.compile(r"Voltage\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE)
+        'volt_meas': re.compile(r"Voltage\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE),
+        'freq_offset': re.compile(r"freq_off\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE)
     }
 
     @staticmethod
@@ -31,5 +33,6 @@ class GpsdoParser:
         return GpsdoData(
             delta=self._try_parse_float(self._patterns['delta'], line),
             voltage_set=self._try_parse_float(self._patterns['volt_set'], line),
-            voltage_measured=self._try_parse_float(self._patterns['volt_meas'], line)
+            voltage_measured=self._try_parse_float(self._patterns['volt_meas'], line),
+            freq_offset=self._try_parse_float(self._patterns['freq_offset'], line)
         )

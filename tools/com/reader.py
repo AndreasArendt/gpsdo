@@ -28,7 +28,7 @@ def read_loop(ser, log):
             # Handle each measurement type independently
             if data.delta is not None:
                 filtered = kf.update(data.delta)
-                plotter.update_filter(timestamp, filtered)
+                #plotter.update_filter(timestamp, filtered)
                 log.info(f"measurement={data.delta} filtered={filtered}")
             
             if data.voltage_set is not None:
@@ -39,6 +39,10 @@ def read_loop(ser, log):
                 plotter.update_volt_meas(timestamp, data.voltage_measured)
                 log.info(f"volt_meas={data.voltage_measured}")
                 
+            if data.freq_offset is not None:
+                plotter.update_freq_offset_hw(timestamp, data.freq_offset)
+                log.info(f"freq_offset={data.freq_offset}")
+
     except KeyboardInterrupt:
         log.info("stopping read loop by user")
     finally:
