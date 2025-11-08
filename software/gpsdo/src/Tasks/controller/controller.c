@@ -68,7 +68,11 @@ void controllerTask(void *argument) {
 		if(delta > 0)
 		{
 			filter_predict();
-			filter_correct(delta);
+
+			// do correction only if considered healthy
+			if(filter_pre_check(delta))
+				filter_correct(delta);
+
 			usb_printf("delta: %lu\r\n", (unsigned long) delta);
 
 			float freq_off = filter_get_frequency_offset_Hz();
