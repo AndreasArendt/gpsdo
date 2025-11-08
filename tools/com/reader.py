@@ -1,4 +1,4 @@
-from .gpsdo_parser import parse_delta_from_line
+import gpsdo_parser
 from .kalman import KalmanFilter
 
 def read_loop(ser, log):
@@ -13,9 +13,17 @@ def read_loop(ser, log):
             except Exception:
                 line = raw.decode("latin-1", errors="replace")
             log.debug("recv: %s", line.strip())
-            meas = parse_delta_from_line(line)
+            meas = gpsdo_parser.parse_delta_from_line(line)
             if meas is None:
-                log.debug("no measurement parsed")
+                volt_set = gpsdo_parser.parse_volt_set_from_line(line)
+                
+                if volt_set is None:
+                    volt_meas = gpsdo_parser.parse_volt_meas_from_line(line)
+                    if volt_meas is not None:
+                        log.info("volt_meas: %s", volt_meas)                        
+                    continue
+                else:
+                    log.info("volt_set: %s", volt_set)
                 continue
 
             filtered = kf.update(meas)            

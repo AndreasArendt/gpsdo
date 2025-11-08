@@ -53,13 +53,38 @@ void DAC_SetVoltage(float voltage) {
 	DAC_AD5541A_set_value(value);
 }
 
+static const float V_Max = 3.0;
+static const float V_Min = 0.5;
+static const float V_Mid = (V_Max - V_Min) / 2;
+
+static const float Kp = 0.02f;
+static const float Ki = 0.002f;
+static const float Kd = 0.004f;
+
+float control(float freq_offset, float freq_drift, float dt)
+{
+	static float f_integral = 0.0f;
+
+	float p = V_Mid + Kp * freq_drift;
+	float i = Ki * f_integral;
+	float d = Kd * freq_drift;
+
+	float v_out = p+i+d;
+
+	if(v_out > V_Max) v_out = V_Max;
+	if(v_out < V_Min) v_out = V_Min;
+
+	f_integral += freq_offset * dt;
+
+	return v_out;
+}
+
 void controllerTask(void *argument) {
 	while (!hal_initialized)
 		osDelay(100);
 
-	float volt = 0.0f;
 	filter_init();
-	DAC_SetVoltage(volt);
+	DAC_SetVoltage(2.0);
 
 	while (1) {
 		osSemaphoreAcquire(xPPSSemaphoreHandle, osWaitForever);
@@ -68,6 +93,12 @@ void controllerTask(void *argument) {
 		if(delta > 0)
 		{
 			filter_step(delta);
+			float freq_off_Hz = filter_get_frequency_offset_Hz();
+			float freq_drift_HzDs = filter_get_frequency_drift_HzDs();
+
+			float volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
+			DAC_SetVoltage(volt);
+
 			usb_printf("delta: %lu\r\n", (unsigned long) delta);
 
 			float freq_off = filter_get_frequency_offset_Hz();
@@ -75,6 +106,11 @@ void controllerTask(void *argument) {
 					(int) ((freq_off - (int) freq_off) * 1000.0f));
 
 			usb_printf("freq_off: %d.%d\r\n", (int) freq_off, freq_off_frac);
+
+			int volt_frac = fabsf(
+					(int) ((volt - (int) volt) * 1000.0f));
+
+			usb_printf("volt_set: %d.%d\r\n", (int) volt, volt_frac);
 		}
 	}
 }
