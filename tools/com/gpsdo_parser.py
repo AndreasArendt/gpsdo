@@ -1,49 +1,35 @@
-import json
-import re
+from dataclasses import dataclass
 from typing import Optional
+import re
 
-_delta_re = re.compile(r"delta\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE)
-_volt_set_re = re.compile(r"volt_set\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE)
-_volt_meas_re = re.compile(r"Voltage\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE)
+@dataclass
+class GpsdoData:
+    delta: Optional[float] = None
+    voltage_set: Optional[float] = None
+    voltage_measured: Optional[float] = None
 
-def parse_volt_meas_from_line(line: str) -> Optional[float]:
-    if not line:
+class GpsdoParser:
+    _patterns = {
+        'delta': re.compile(r"delta\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE),
+        'volt_set': re.compile(r"volt_set\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE),
+        'volt_meas': re.compile(r"Voltage\s*:\s*([+-]?\d+(?:\.\d+)?)", re.IGNORECASE)
+    }
+
+    @staticmethod
+    def _try_parse_float(pattern: re.Pattern, line: str) -> Optional[float]:
+        if match := pattern.search(line.strip()):
+            try:
+                return float(match.group(1))
+            except ValueError:
+                return None
         return None
-    line = line.strip()
-    m = _volt_meas_re.search(line)
-    if m:
-        try:
-            return float(m.group(1))
-        except ValueError:
-            return None
 
-def parse_volt_set_from_line(line: str) -> Optional[float]:
-    if not line:
-        return None
-    line = line.strip()
-    m = _volt_set_re.search(line)
-    if m:
-        try:
-            return float(m.group(1))
-        except ValueError:
-            return None
-
-def parse_delta_from_line(line: str) -> Optional[float]:
-    if not line:
-        return None
-    line = line.strip()
-    m = _delta_re.search(line)
-    if m:
-        try:
-            return float(m.group(1))
-        except ValueError:
-            return None
-    try:
-        obj = json.loads(line)
-        if isinstance(obj, dict) and "delta" in obj:
-            val = obj["delta"]
-            if isinstance(val, (int, float)):
-                return float(val)
-    except json.JSONDecodeError:
-        pass
-    return None
+    def parse_line(self, line: str) -> GpsdoData:
+        if not line:
+            return GpsdoData()
+        
+        return GpsdoData(
+            delta=self._try_parse_float(self._patterns['delta'], line),
+            voltage_set=self._try_parse_float(self._patterns['volt_set'], line),
+            voltage_measured=self._try_parse_float(self._patterns['volt_meas'], line)
+        )
