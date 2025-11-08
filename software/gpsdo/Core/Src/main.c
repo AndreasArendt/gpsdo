@@ -51,9 +51,6 @@ typedef StaticSemaphore_t osStaticSemaphoreDef_t;
 ADC_HandleTypeDef hadc1;
 DMA_HandleTypeDef hdma_adc1;
 
-I2C_HandleTypeDef hi2c1;
-DMA_HandleTypeDef hdma_i2c1_tx;
-
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim1;
@@ -62,7 +59,7 @@ TIM_HandleTypeDef htim5;
 
 /* Definitions for tsk_controller */
 osThreadId_t tsk_controllerHandle;
-uint32_t controllerTaskBuffer[ 128 ];
+uint32_t controllerTaskBuffer[ 256 ];
 osStaticThreadDef_t controllerTaskControlBlock;
 const osThreadAttr_t tsk_controller_attributes = {
   .name = "tsk_controller",
@@ -86,7 +83,7 @@ const osThreadAttr_t tsk_usb_attributes = {
 };
 /* Definitions for tsk_manager */
 osThreadId_t tsk_managerHandle;
-uint32_t tsk_managerBuffer[ 128 ];
+uint32_t tsk_managerBuffer[ 256 ];
 osStaticThreadDef_t tsk_managerControlBlock;
 const osThreadAttr_t tsk_manager_attributes = {
   .name = "tsk_manager",
@@ -113,7 +110,6 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_TIM1_Init(void);
-static void MX_I2C1_Init(void);
 static void MX_TIM5_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM2_Init(void);
@@ -144,7 +140,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
- HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
   /* USER CODE END Init */
@@ -160,7 +156,6 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_TIM1_Init();
-  MX_I2C1_Init();
   MX_TIM5_Init();
   MX_ADC1_Init();
   MX_TIM2_Init();
@@ -185,7 +180,7 @@ int main(void)
 
   /* Create the semaphores(s) */
   /* creation of xPPSSemaphore */
-  xPPSSemaphoreHandle = osSemaphoreNew(1, 1, &xPPSSemaphore_attributes);
+  xPPSSemaphoreHandle = osSemaphoreNew(1, 0, &xPPSSemaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
@@ -336,40 +331,6 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
-
-}
-
-/**
-  * @brief I2C1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_I2C1_Init(void)
-{
-
-  /* USER CODE BEGIN I2C1_Init 0 */
-
-  /* USER CODE END I2C1_Init 0 */
-
-  /* USER CODE BEGIN I2C1_Init 1 */
-
-  /* USER CODE END I2C1_Init 1 */
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
-  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 152;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  /* USER CODE END I2C1_Init 2 */
 
 }
 
@@ -571,13 +532,9 @@ static void MX_DMA_Init(void)
 {
 
   /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
   __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
-  /* DMA1_Stream1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
   /* DMA2_Stream0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 10, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);

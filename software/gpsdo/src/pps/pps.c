@@ -10,6 +10,8 @@
 #include "usb.h"
 #include "led.h"
 
+#include <semphr.h>
+
 static volatile uint32_t last_PPS = 0;
 static volatile uint32_t PPS_delta = 0;
 
@@ -34,7 +36,8 @@ static uint32_t Read625kHzCount(void) {
 }
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
-    __disable_irq();
+    BaseType_t xHigherPriorityTaskWoken;
+
 	if (htim->Instance == TIM5) {
 		uint32_t now = Read625kHzCount();
 
@@ -43,12 +46,13 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 		if (last_PPS != 0) {
 			PPS_delta = now - last_PPS;
 
-			osSemaphoreRelease(xPPSSemaphoreHandle);
+            xSemaphoreGiveFromISR(xPPSSemaphoreHandle, &xHigherPriorityTaskWoken);
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+			//osSemaphoreRelease(xPPSSemaphoreHandle);
 		}
 
 		last_PPS = now;
 	}
-    __enable_irq();
 }
 
 uint32_t pps_get_delta() {
