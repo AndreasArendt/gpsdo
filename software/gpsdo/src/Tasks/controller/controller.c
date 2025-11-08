@@ -57,13 +57,14 @@ static const float V_Max = 3.0;
 static const float V_Min = 0.5;
 static const float V_Mid = (V_Max - V_Min) / 2;
 
-static const float Kp = 0.02f;
-static const float Ki = 0.002f;
-static const float Kd = 0.004f;
+static const float Kp = 0.002f;
+static const float Ki = 0.0002f;
+static const float Kd = 0.0004f;
 
 float control(float freq_offset, float freq_drift, float dt)
 {
 	static float f_integral = 0.0f;
+	f_integral += freq_offset * dt;
 
 	float p = V_Mid + Kp * freq_drift;
 	float i = Ki * f_integral;
@@ -74,7 +75,6 @@ float control(float freq_offset, float freq_drift, float dt)
 	if(v_out > V_Max) v_out = V_Max;
 	if(v_out < V_Min) v_out = V_Min;
 
-	f_integral += freq_offset * dt;
 
 	return v_out;
 }
