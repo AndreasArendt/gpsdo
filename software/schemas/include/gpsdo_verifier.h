@@ -14,11 +14,12 @@ static int gpsdo_Status_verify_table(flatcc_table_verifier_descriptor_t *td);
 static int gpsdo_Status_verify_table(flatcc_table_verifier_descriptor_t *td)
 {
     int ret;
-    if ((ret = flatcc_verify_field(td, 0, 4, 4) /* freq_error_Hz */)) return ret;
-    if ((ret = flatcc_verify_field(td, 1, 4, 4) /* freq_dirft_HzDs */)) return ret;
-    if ((ret = flatcc_verify_field(td, 2, 4, 4) /* voltage_control_V */)) return ret;
-    if ((ret = flatcc_verify_field(td, 3, 4, 4) /* voltage_measured_V */)) return ret;
-    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* temperature_C */)) return ret;
+    if ((ret = flatcc_verify_field(td, 0, 4, 4) /* freq_error_hz */)) return ret;
+    if ((ret = flatcc_verify_field(td, 1, 4, 4) /* freq_drift_hz_s */)) return ret;
+    if ((ret = flatcc_verify_field(td, 2, 4, 4) /* voltage_control_v */)) return ret;
+    if ((ret = flatcc_verify_field(td, 3, 4, 4) /* voltage_measured_v */)) return ret;
+    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* temperature_c */)) return ret;
+    if ((ret = flatcc_verify_field(td, 5, 4, 4) /* raw_counter_value */)) return ret;
     return flatcc_verify_ok;
 }
 

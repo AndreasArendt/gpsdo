@@ -7,7 +7,7 @@
 
 #include "manager.h"
 #include "hal.h"
-#include "usb.h"
+#include "flatbuf_message_builder.h"
 #include "pps.h"
 
 #include <math.h>

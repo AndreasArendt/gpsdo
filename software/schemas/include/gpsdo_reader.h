@@ -46,11 +46,12 @@ static inline gpsdo_Status_table_t gpsdo_Status_vec_at(gpsdo_Status_vec_t vec, s
 __flatbuffers_offset_vec_at(gpsdo_Status_table_t, vec, i, 0)
 __flatbuffers_table_as_root(gpsdo_Status)
 
-__flatbuffers_define_scalar_field(0, gpsdo_Status, freq_error_Hz, flatbuffers_float, float, 0.00000000f)
-__flatbuffers_define_scalar_field(1, gpsdo_Status, freq_dirft_HzDs, flatbuffers_float, float, 0.00000000f)
-__flatbuffers_define_scalar_field(2, gpsdo_Status, voltage_control_V, flatbuffers_float, float, 0.00000000f)
-__flatbuffers_define_scalar_field(3, gpsdo_Status, voltage_measured_V, flatbuffers_float, float, 0.00000000f)
-__flatbuffers_define_scalar_field(4, gpsdo_Status, temperature_C, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(0, gpsdo_Status, freq_error_hz, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(1, gpsdo_Status, freq_drift_hz_s, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(2, gpsdo_Status, voltage_control_v, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(3, gpsdo_Status, voltage_measured_v, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(4, gpsdo_Status, temperature_c, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(5, gpsdo_Status, raw_counter_value, flatbuffers_uint32, uint32_t, UINT32_C(0))
 
 
 #include "flatcc/flatcc_epilogue.h"

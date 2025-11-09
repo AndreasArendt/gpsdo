@@ -32,7 +32,7 @@ class Status(object):
         return 0.0
 
     # Status
-    def FreqDirftHzDs(self):
+    def FreqDriftHzS(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
@@ -59,8 +59,15 @@ class Status(object):
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
+    # Status
+    def RawCounterValue(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
+        return 0
+
 def StatusStart(builder):
-    builder.StartObject(5)
+    builder.StartObject(6)
 
 def Start(builder):
     StatusStart(builder)
@@ -71,11 +78,11 @@ def StatusAddFreqErrorHz(builder, freqErrorHz):
 def AddFreqErrorHz(builder, freqErrorHz):
     StatusAddFreqErrorHz(builder, freqErrorHz)
 
-def StatusAddFreqDirftHzDs(builder, freqDirftHzDs):
-    builder.PrependFloat32Slot(1, freqDirftHzDs, 0.0)
+def StatusAddFreqDriftHzS(builder, freqDriftHzS):
+    builder.PrependFloat32Slot(1, freqDriftHzS, 0.0)
 
-def AddFreqDirftHzDs(builder, freqDirftHzDs):
-    StatusAddFreqDirftHzDs(builder, freqDirftHzDs)
+def AddFreqDriftHzS(builder, freqDriftHzS):
+    StatusAddFreqDriftHzS(builder, freqDriftHzS)
 
 def StatusAddVoltageControlV(builder, voltageControlV):
     builder.PrependFloat32Slot(2, voltageControlV, 0.0)
@@ -94,6 +101,12 @@ def StatusAddTemperatureC(builder, temperatureC):
 
 def AddTemperatureC(builder, temperatureC):
     StatusAddTemperatureC(builder, temperatureC)
+
+def StatusAddRawCounterValue(builder, rawCounterValue):
+    builder.PrependUint32Slot(5, rawCounterValue, 0)
+
+def AddRawCounterValue(builder, rawCounterValue):
+    StatusAddRawCounterValue(builder, rawCounterValue)
 
 def StatusEnd(builder):
     return builder.EndObject()

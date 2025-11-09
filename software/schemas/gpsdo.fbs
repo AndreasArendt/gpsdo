@@ -1,11 +1,12 @@
 namespace gpsdo;
 
 table Status {  
-  freq_error_Hz: float;
-  freq_dirft_HzDs: float;
-  voltage_control_V: float;
-  voltage_measured_V: float;
-  temperature_C: float;
+  freq_error_hz: float;
+  freq_drift_hz_s: float;
+  voltage_control_v: float;
+  voltage_measured_v: float;
+  temperature_c: float;
+  raw_counter_value : uint;
 }
 
 root_type Status;
