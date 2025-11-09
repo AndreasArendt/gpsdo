@@ -58,6 +58,15 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Source\MatrixFunctions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc/runtime}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc/portable}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc/portable/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Projekte\gpsdo\software\schemas\include&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.1939340893" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -94,6 +103,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/filter}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include\dsp&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Projekte\gpsdo\software\schemas\include&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.621430956" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -120,11 +133,12 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="Tasks/usb" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="libs/flatcc/src/runtime"/>
+						<entry excluding="Tasks/usb" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -184,6 +198,15 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Source\MatrixFunctions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc/runtime}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc/portable}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc/portable/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Projekte\gpsdo\software\schemas\include&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input.793684250" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.input"/>
 							</tool>
@@ -220,6 +243,15 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Users\andia\STM32Cube\Repository\STM32Cube_FW_F4_V1.28.3\Drivers\CMSIS\DSP\Source\MatrixFunctions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Middlewares/flatcc/runtime}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc/portable}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/libs/flatcc/include/flatcc/portable/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Projekte\gpsdo\software\schemas\include&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.234048784" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -247,8 +279,8 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="USB_DEVICE"/>
 					</sourceEntries>
 				</configuration>

@@ -14,26 +14,8 @@
 #include <stdarg.h>
 #include <queue.h>
 
-/* --- CONFIGURATION --- */
-#define USB_EP_MPS            64     // Full-Speed endpoint max packet size
-#define USB_MSG_MAX_SIZE      USB_EP_MPS
-#define USB_TX_QUEUE_LENGTH   16
-#define USB_RX_QUEUE_LENGTH   8
-#define USB_QUEUE_SET_LENGTH  (USB_TX_QUEUE_LENGTH + USB_RX_QUEUE_LENGTH + 2)
-
-struct {
-    float pcb_temp__C;
-    uint16_t samples_delay;
-} s_global_state_t;
-
-/* --- Message container --- */
-typedef struct {
-    uint8_t data[USB_MSG_MAX_SIZE];
-    size_t len;
-} UsbMessage_t;
-
 /* --- FreeRTOS objects --- */
-static QueueHandle_t xUsbTxQueue = NULL;
+QueueHandle_t xUsbTxQueue = NULL;
 static QueueHandle_t xUsbRxQueue = NULL;
 static QueueSetHandle_t usbQueueSet = NULL;
 
@@ -145,6 +127,49 @@ void usbTask(void *argument) {
     }
 }
 
+/* Wait until the USB device is configured/enumerated by the host */
+static void usb_wait_enumerated(void) {
+    uint32_t timeout_ms = 5000;
+    uint32_t waited = 0;
+    while (hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED) {
+        vTaskDelay(pdMS_TO_TICKS(10));
+        waited += 10;
+        if (waited >= timeout_ms) {
+            /* Give up waiting after timeout - break to avoid deadlock */
+            break;
+        }
+    }
+}
+
+/* Wait for transmit completion by checking internal TxState.
+ * This is safe because only usbTask() will call CDC_Transmit_FS().
+ */
+static void usb_wait_tx_complete(void) {
+    /* Access CDC internal handle if available */
+    if (hUsbDeviceFS.pClassData == NULL) {
+        /* Not configured or class data not initialized yet */
+        return;
+    }
+
+    USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
+
+    /* TxState: 0 = ready, 1 = busy (internal to the CDC class) */
+    uint32_t wait_count = 0;
+    while (hcdc->TxState != 0) {
+        vTaskDelay(pdMS_TO_TICKS(1));
+        if (++wait_count > 2000) { /* ~2s safety cap */
+            break;
+        }
+    }
+}
+
+/* Optional diagnostics retrieval (call from a debug console) */
+void usb_get_diagnostics(uint32_t *tx_drops, uint32_t *rx_drops) {
+    if (tx_drops) *tx_drops = usb_tx_dropped;
+    if (rx_drops) *rx_drops = usb_rx_dropped;
+}
+
+// DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED
 /* Called from the USB CDC RX path (e.g. USBD_CDC_ReceivePacket callback) */
 void usb_receive_isr(uint8_t *pbuf, uint32_t *Len) {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
@@ -210,44 +235,4 @@ void usb_printf_ISR(const char *fmt, ...) {
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
-/* Wait until the USB device is configured/enumerated by the host */
-static void usb_wait_enumerated(void) {
-    uint32_t timeout_ms = 5000;
-    uint32_t waited = 0;
-    while (hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED) {
-        vTaskDelay(pdMS_TO_TICKS(10));
-        waited += 10;
-        if (waited >= timeout_ms) {
-            /* Give up waiting after timeout - break to avoid deadlock */
-            break;
-        }
-    }
-}
 
-/* Wait for transmit completion by checking internal TxState.
- * This is safe because only usbTask() will call CDC_Transmit_FS().
- */
-static void usb_wait_tx_complete(void) {
-    /* Access CDC internal handle if available */
-    if (hUsbDeviceFS.pClassData == NULL) {
-        /* Not configured or class data not initialized yet */
-        return;
-    }
-
-    USBD_CDC_HandleTypeDef *hcdc = (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
-
-    /* TxState: 0 = ready, 1 = busy (internal to the CDC class) */
-    uint32_t wait_count = 0;
-    while (hcdc->TxState != 0) {
-        vTaskDelay(pdMS_TO_TICKS(1));
-        if (++wait_count > 2000) { /* ~2s safety cap */
-            break;
-        }
-    }
-}
-
-/* Optional diagnostics retrieval (call from a debug console) */
-void usb_get_diagnostics(uint32_t *tx_drops, uint32_t *rx_drops) {
-    if (tx_drops) *tx_drops = usb_tx_dropped;
-    if (rx_drops) *rx_drops = usb_rx_dropped;
-}

@@ -3,7 +3,8 @@
 #include "led.h"
 #include "filter.h"
 #include "pps.h"
-#include "usb.h"
+#include "flatbuf_message_builder.h"
+#include "manager.h"
 
 #include <math.h>
 
@@ -98,16 +99,7 @@ void controllerTask(void *argument) {
 		float volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
 		DAC_SetVoltage(volt);
 
-		usb_printf("delta: %lu\r\n", (unsigned long) delta);
-
-		float freq_off = filter_get_frequency_offset_Hz();
-		int freq_off_frac = fabsf(
-				(int) ((freq_off - (int) freq_off) * 1000.0f));
-
-		usb_printf("freq_off: %d.%d\r\n", (int) freq_off, freq_off_frac);
-
-		int volt_frac = fabsf((int) ((volt - (int) volt) * 1000.0f));
-
-		usb_printf("volt_set: %d.%d\r\n", (int) volt, volt_frac);
+		// sent flatbuf
+		flatbuf_send_status(freq_off_Hz, freq_drift_HzDs, volt, get_volt_meas(), get_temperature());
 	}
 }

@@ -24,3 +24,11 @@ The first hardware prototype is currently being tested; all findings are documen
 
 # Contributing
 Contributions are welcome! Whether it's hardware design suggestions, software improvements, or analysis scripts, feel free to open an issue or a pull request.
+
+## Compiling flatcc (Windows)
+* Navigate into `flatcc` submodule folder.  
+* Create `build` folder
+* Navigate into `build` folder
+* Run `cmake ..`
+* Run `cmake --build . --config Release`
+* Executable is in `flatcc/bin/Release/flatcc.exe`

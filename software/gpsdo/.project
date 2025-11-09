@@ -60,5 +60,35 @@
 			<type>1</type>
 			<location>C:/Users/andia/STM32Cube/Repository/STM32Cube_FW_F4_V1.28.3/Drivers/CMSIS/DSP/Source/MatrixFunctions/arm_mat_trans_f32.c</location>
 		</link>
+		<link>
+			<name>Middlewares/Third_Party/flatcc</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/Third_Party/flatcc/flatbuffers_common_builder.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/schemas/include/flatbuffers_common_builder.h</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/Third_Party/flatcc/flatbuffers_common_reader.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/schemas/include/flatbuffers_common_reader.h</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/Third_Party/flatcc/gpsdo_builder.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/schemas/include/gpsdo_builder.h</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/Third_Party/flatcc/gpsdo_reader.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/schemas/include/gpsdo_reader.h</locationURI>
+		</link>
+		<link>
+			<name>Middlewares/Third_Party/flatcc/gpsdo_verifier.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/schemas/include/gpsdo_verifier.h</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

@@ -12,6 +12,7 @@
 #include "stm32f4xx_hal.h"
 #include "message_buffer.h"
 #include "usbd_def.h"
+#include "queue.h"
 
 extern uint16_t adc_dma_buffer[2];  // CH1, CH3 [voltage, temperature]
 extern uint8_t hal_initialized;

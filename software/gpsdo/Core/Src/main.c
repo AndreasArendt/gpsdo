@@ -27,7 +27,6 @@
 #include "usb.h"
 #include "led.h"
 #include "hal.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
