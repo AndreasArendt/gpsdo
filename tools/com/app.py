@@ -6,19 +6,8 @@ import logging
 
 log = logging.getLogger(__name__)
 
-# --- Flexible imports: support running both as package and as script ---
-try:
-    # When run as part of the package
-    from .serial_utils import open_serial_for_vid
-    from .reader import read_loop
-
-except ImportError:
-    # When run directly inside gpsdo/tools/com/
-    pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-    if pkg_root not in sys.path:
-        sys.path.insert(0, pkg_root)
-    from gpsdo.tools.com.serial_utils import open_serial_for_vid
-    from gpsdo.tools.com.reader import read_loop
+from serial_utils import open_serial_for_vid
+from reader import read_loop
 
 def main(argv: Optional[list] = None):
     parser = argparse.ArgumentParser()

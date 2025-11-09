@@ -62,17 +62,6 @@ void usbTask(void *argument) {
     /* Wait until USB stack enumerated before doing any transfers */
     usb_wait_enumerated();
 
-    /* Inform host */
-    {
-        const char *s = "USB ready\r\n";
-        UsbMessage_t msg;
-        size_t l = strlen(s);
-        if (l > sizeof(msg.data)) l = sizeof(msg.data);
-        memcpy(msg.data, s, l);
-        msg.len = l;
-        xQueueSend(xUsbTxQueue, &msg, 0);
-    }
-
     for (;;) {
         /* Wait for either TX or RX queue to have data */
         activeQueue = xQueueSelectFromSet(usbQueueSet, portMAX_DELAY);
