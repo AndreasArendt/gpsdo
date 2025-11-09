@@ -8,6 +8,7 @@
 #include "queue.h"
 #include "timers.h"
 #include "assert.h"
+#include "flatbuf_defs.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -36,8 +37,8 @@ void usb_init(void) {
     MX_USB_DEVICE_Init();
 
     /* Create queues (must be created before usbTask runs) */
-    xUsbTxQueue = xQueueCreate(USB_TX_QUEUE_LENGTH, sizeof(UsbMessage_t));
-    xUsbRxQueue = xQueueCreate(USB_RX_QUEUE_LENGTH, sizeof(UsbMessage_t));
+    xUsbTxQueue = xQueueCreate(USB_TX_QUEUE_LENGTH, sizeof(flatbuf_message_t));
+    xUsbRxQueue = xQueueCreate(USB_RX_QUEUE_LENGTH, sizeof(flatbuf_message_t));
     configASSERT(xUsbTxQueue);
     configASSERT(xUsbRxQueue);
 
@@ -56,7 +57,7 @@ void usb_init(void) {
 
 /* The system USB task: serializes TX and handles RX */
 void usbTask(void *argument) {
-    UsbMessage_t in;
+    flatbuf_message_t in;
     QueueSetMemberHandle_t activeQueue;
 
     /* Wait until USB stack enumerated before doing any transfers */
@@ -68,10 +69,13 @@ void usbTask(void *argument) {
 
         if (activeQueue == xUsbTxQueue) {
             if (xQueueReceive(xUsbTxQueue, &in, 0) == pdTRUE) {
-                /* Chunk the message into USB_EP_MPS-sized packets */
+                /* Compute total message size: header + payload */
+                size_t total_len = sizeof(in.magic) + sizeof(in.msg_id) + sizeof(in.len) + in.len;
+                uint8_t *buf = (uint8_t *)&in;  // points to the start of the struct (header)
+
                 size_t offset = 0;
-                while (offset < in.len) {
-                    size_t chunk = in.len - offset;
+                while (offset < total_len) {
+                    size_t chunk = total_len - offset;
                     if (chunk > USB_EP_MPS) chunk = USB_EP_MPS;
 
                     /* Ensure device still configured */
@@ -81,7 +85,7 @@ void usbTask(void *argument) {
                     uint8_t res;
                     uint32_t attempts = 0;
                     do {
-                        res = CDC_Transmit_FS((uint8_t *)&in.data[offset], chunk);
+                        res = CDC_Transmit_FS(&buf[offset], chunk);
                         if (res == USBD_OK) break;
                         /* USBD_BUSY: wait a bit and retry */
                         vTaskDelay(pdMS_TO_TICKS(2));
@@ -104,10 +108,7 @@ void usbTask(void *argument) {
         } else if (activeQueue == xUsbRxQueue) {
             if (xQueueReceive(xUsbRxQueue, &in, 0) == pdTRUE) {
                 /* Application-specific: handle received data */
-                /* Example: echo back the received packet */
-                /* You might want to send this to another task instead */
-                // echo:
-                /* NOTE: We push to TX queue instead of calling CDC_Transmit_FS directly */
+                // example: echo back
                 xQueueSend(xUsbTxQueue, &in, 0);
             }
         } else {
@@ -115,6 +116,7 @@ void usbTask(void *argument) {
         }
     }
 }
+
 
 /* Wait until the USB device is configured/enumerated by the host */
 static void usb_wait_enumerated(void) {
@@ -157,71 +159,4 @@ void usb_get_diagnostics(uint32_t *tx_drops, uint32_t *rx_drops) {
     if (tx_drops) *tx_drops = usb_tx_dropped;
     if (rx_drops) *rx_drops = usb_rx_dropped;
 }
-
-// DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED --- DEPRECATED
-/* Called from the USB CDC RX path (e.g. USBD_CDC_ReceivePacket callback) */
-void usb_receive_isr(uint8_t *pbuf, uint32_t *Len) {
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-
-    UsbMessage_t packet;
-    if (*Len > sizeof(packet.data)) {
-        /* Truncate if incoming buffer bigger than our message size */
-        packet.len = sizeof(packet.data);
-    } else {
-        packet.len = *Len;
-    }
-    memcpy(packet.data, pbuf, packet.len);
-
-    if (xUsbRxQueue) {
-        if (xQueueSendFromISR(xUsbRxQueue, &packet, &xHigherPriorityTaskWoken) != pdPASS) {
-            /* Queue full -> drop */
-            usb_rx_dropped++;
-        }
-    }
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-}
-
-/* Helper: safe printf from tasks (non-ISR). Non-blocking to the queue.
- * If queue is full, drop the message and increment counter.
- */
-void usb_printf(const char *fmt, ...) {
-    UsbMessage_t out;
-    va_list ap;
-    va_start(ap, fmt);
-    int len = vsnprintf((char*)out.data, sizeof(out.data), fmt, ap);
-    va_end(ap);
-
-    if (len < 0) return;
-    out.len = (size_t)((len >= (int)sizeof(out.data)) ? (sizeof(out.data)-1) : len);
-
-    if (xUsbTxQueue) {
-        if (xQueueSend(xUsbTxQueue, &out, pdMS_TO_TICKS(10)) != pdPASS) {
-            usb_tx_dropped++;
-        }
-    }
-}
-
-/* NOTE: heavy formatting from ISR is discouraged. Below is a convenience wrapper
- * that *can* be used but it calls vsnprintf in ISR context, which may be slow.
- * Prefer usb_printf_from_isr() where possible.
- */
-void usb_printf_ISR(const char *fmt, ...) {
-    UsbMessage_t out;
-    va_list ap;
-    va_start(ap, fmt);
-    int len = vsnprintf((char*)out.data, sizeof(out.data), fmt, ap);
-    va_end(ap);
-
-    if (len <= 0) return;
-    out.len = (size_t)((len >= (int)sizeof(out.data)) ? (sizeof(out.data)-1) : len);
-
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    if (xUsbTxQueue) {
-        if (xQueueSendFromISR(xUsbTxQueue, &out, &xHigherPriorityTaskWoken) != pdPASS) {
-            usb_tx_dropped++;
-        }
-    }
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-}
-
 

@@ -13,20 +13,9 @@
 extern MessageBufferHandle_t usbTxMessageBuffer;
 extern QueueHandle_t xUsbTxQueue;
 
-typedef struct {
-    uint8_t data[USB_MSG_MAX_SIZE];
-    size_t len;
-} UsbMessage_t;
-
 // Interface definition
 void usb_init();
 
 void usb_get_diagnostics(uint32_t *tx_drops, uint32_t *rx_drops);
-
-// DEPRECATED - replaced by FLATBUF
-void usb_receive_isr(uint8_t* pbuf, uint32_t *Len);
-
-void usb_printf(const char *fmt, ...);
-void usb_printf(const char *fmt, ...);
 
 #endif

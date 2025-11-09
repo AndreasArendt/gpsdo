@@ -20,29 +20,31 @@
 static const flatbuffers_voffset_t __gpsdo_Status_required[] = { 0 };
 typedef flatbuffers_ref_t gpsdo_Status_ref_t;
 static gpsdo_Status_ref_t gpsdo_Status_clone(flatbuffers_builder_t *B, gpsdo_Status_table_t t);
-__flatbuffers_build_table(flatbuffers_, gpsdo_Status, 5)
+__flatbuffers_build_table(flatbuffers_, gpsdo_Status, 6)
 
 #define __gpsdo_Status_formal_args ,\
-  float v0, float v1, float v2, float v3, float v4
+  float v0, float v1, float v2, float v3, float v4, uint32_t v5
 #define __gpsdo_Status_call_args ,\
-  v0, v1, v2, v3, v4
+  v0, v1, v2, v3, v4, v5
 static inline gpsdo_Status_ref_t gpsdo_Status_create(flatbuffers_builder_t *B __gpsdo_Status_formal_args);
 __flatbuffers_build_table_prolog(flatbuffers_, gpsdo_Status, gpsdo_Status_file_identifier, gpsdo_Status_type_identifier)
 
-__flatbuffers_build_scalar_field(0, flatbuffers_, gpsdo_Status_freq_error_Hz, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
-__flatbuffers_build_scalar_field(1, flatbuffers_, gpsdo_Status_freq_dirft_HzDs, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
-__flatbuffers_build_scalar_field(2, flatbuffers_, gpsdo_Status_voltage_control_V, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
-__flatbuffers_build_scalar_field(3, flatbuffers_, gpsdo_Status_voltage_measured_V, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
-__flatbuffers_build_scalar_field(4, flatbuffers_, gpsdo_Status_temperature_C, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
+__flatbuffers_build_scalar_field(0, flatbuffers_, gpsdo_Status_freq_error_hz, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
+__flatbuffers_build_scalar_field(1, flatbuffers_, gpsdo_Status_freq_drift_hz_s, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
+__flatbuffers_build_scalar_field(2, flatbuffers_, gpsdo_Status_voltage_control_v, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
+__flatbuffers_build_scalar_field(3, flatbuffers_, gpsdo_Status_voltage_measured_v, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
+__flatbuffers_build_scalar_field(4, flatbuffers_, gpsdo_Status_temperature_c, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
+__flatbuffers_build_scalar_field(5, flatbuffers_, gpsdo_Status_raw_counter_value, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0), gpsdo_Status)
 
 static inline gpsdo_Status_ref_t gpsdo_Status_create(flatbuffers_builder_t *B __gpsdo_Status_formal_args)
 {
     if (gpsdo_Status_start(B)
-        || gpsdo_Status_freq_error_Hz_add(B, v0)
-        || gpsdo_Status_freq_dirft_HzDs_add(B, v1)
-        || gpsdo_Status_voltage_control_V_add(B, v2)
-        || gpsdo_Status_voltage_measured_V_add(B, v3)
-        || gpsdo_Status_temperature_C_add(B, v4)) {
+        || gpsdo_Status_freq_error_hz_add(B, v0)
+        || gpsdo_Status_freq_drift_hz_s_add(B, v1)
+        || gpsdo_Status_voltage_control_v_add(B, v2)
+        || gpsdo_Status_voltage_measured_v_add(B, v3)
+        || gpsdo_Status_temperature_c_add(B, v4)
+        || gpsdo_Status_raw_counter_value_add(B, v5)) {
         return 0;
     }
     return gpsdo_Status_end(B);
@@ -52,11 +54,12 @@ static gpsdo_Status_ref_t gpsdo_Status_clone(flatbuffers_builder_t *B, gpsdo_Sta
 {
     __flatbuffers_memoize_begin(B, t);
     if (gpsdo_Status_start(B)
-        || gpsdo_Status_freq_error_Hz_pick(B, t)
-        || gpsdo_Status_freq_dirft_HzDs_pick(B, t)
-        || gpsdo_Status_voltage_control_V_pick(B, t)
-        || gpsdo_Status_voltage_measured_V_pick(B, t)
-        || gpsdo_Status_temperature_C_pick(B, t)) {
+        || gpsdo_Status_freq_error_hz_pick(B, t)
+        || gpsdo_Status_freq_drift_hz_s_pick(B, t)
+        || gpsdo_Status_voltage_control_v_pick(B, t)
+        || gpsdo_Status_voltage_measured_v_pick(B, t)
+        || gpsdo_Status_temperature_c_pick(B, t)
+        || gpsdo_Status_raw_counter_value_pick(B, t)) {
         return 0;
     }
     __flatbuffers_memoize_end(B, t, gpsdo_Status_end(B));

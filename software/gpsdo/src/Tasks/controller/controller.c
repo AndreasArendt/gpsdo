@@ -100,6 +100,6 @@ void controllerTask(void *argument) {
 		DAC_SetVoltage(volt);
 
 		// sent flatbuf
-		flatbuf_send_status(freq_off_Hz, freq_drift_HzDs, volt, get_volt_meas(), get_temperature());
+		flatbuf_send_status(freq_off_Hz, freq_drift_HzDs, volt, get_volt_meas(), get_temperature(), delta);
 	}
 }
