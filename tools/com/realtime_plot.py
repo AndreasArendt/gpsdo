@@ -20,7 +20,7 @@ class RealtimePlotter:
         
         # Initialize plot lines
         self.line_freq_offset_post, = self.ax1.plot([], [], 'b-', label='Frequency Offset (post)')
-        self.line_freq_offset, = self.ax2.plot([], [], 'r-', label='Frequency Offset')
+        self.line_freq_offset, = self.ax1.plot([], [], 'r-', label='Frequency Offset')
 
         self.line_freq_drift_post, = self.ax2.plot([], [], 'b-', label='Frequency Drift (post)')
         self.line_freq_drift, = self.ax2.plot([], [], 'r-', label='Frequency Drift')
@@ -48,7 +48,7 @@ class RealtimePlotter:
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
         
-    def update_filter(self, timestamp, freq_offset_post, freq_drift_post, freq_offset, freq_drift, volt_set, volt_meas):
+    def update(self, timestamp, freq_offset_post, freq_drift_post, freq_offset, freq_drift, volt_set, volt_meas):
         """Update filter-related plots"""
         self.timestamps.append(timestamp)
         self.freq_offset_post.append(freq_offset_post)

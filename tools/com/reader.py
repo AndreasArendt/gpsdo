@@ -2,6 +2,7 @@ import struct
 import time
 from kalman import KalmanFilter
 from schemas.gpsdo.Status import Status
+from realtime_plot import RealtimePlotter
 
 FLATBUF_MAGIC = 0xB00B
 MSG_ID_STATUS = 1
@@ -10,6 +11,7 @@ MAX_MESSAGE_SIZE = 1024
 def read_loop(ser, log):
     kf = KalmanFilter()
     start_time = time.time()
+    plotter = RealtimePlotter()
 
     log.info("Waiting for FlatBuffer messages...")
 
@@ -63,8 +65,12 @@ def read_loop(ser, log):
 
                 timestamp = time.time() - start_time
                 filtered = kf.update(status.RawCounterValue())
-            except Exception as e:
-                raise
+
+                freq_offset_post = filtered["freq_offset_Hz"]
+                freq_drift_post = filtered["drift_Hz_per_s"]                
+
+                plotter.update(timestamp, freq_offset_post, freq_drift_post, status.FreqErrorHz(), status.FreqDriftHzS(), status.VoltageControlV(), status.VoltageMeasuredV())
+            except Exception as e:                
                 log.warning(f"Failed to parse Status message: {e}")
                 continue
         else:
