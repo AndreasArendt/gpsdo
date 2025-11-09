@@ -16,6 +16,14 @@
 
 #define DAC_VREF 4.096f
 
+static const float V_Max = 3.0;
+static const float V_Min = 0.5;
+static const float V_Mid = (V_Max - V_Min) / 2;
+
+static const float Kp = 0.4f;
+static const float Ki = 0.0002f;
+static const float Kd = 0.006f;
+
 void DAC_Select() {
 	HAL_GPIO_WritePin(DAC_CS_GPIO_Port, DAC_CS_Pin, GPIO_PIN_RESET);
 }
@@ -54,19 +62,13 @@ void DAC_SetVoltage(float voltage) {
 	DAC_AD5541A_set_value(value);
 }
 
-static const float V_Max = 3.0;
-static const float V_Min = 0.5;
-static const float V_Mid = (V_Max - V_Min) / 2;
-
-static const float Kp = 0.03f;
-static const float Ki = 0.0002f;
-static const float Kd = 0.006f;
-
 float control(float freq_offset, float freq_drift, float dt) {
 	static float f_integral = 0.0f;
 	f_integral += freq_offset * dt;
 
-	float p = V_Mid + Kp * freq_drift;
+	float fun_Kp = tanhf(freq_offset/2) * Kp;
+
+	float p = V_Mid + fun_Kp * freq_drift;
 	float i = Ki * f_integral;
 	float d = Kd * freq_drift;
 

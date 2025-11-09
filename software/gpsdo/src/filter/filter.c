@@ -150,7 +150,7 @@ void filter_step(uint32_t delta)
 	// do correction only if considered healthy
 	if(filter_pre_check(delta))
 	{
-		filtered_delta = filter_ema(delta, filtered_delta, 0.2);
+		filtered_delta = filter_ema(delta, filtered_delta, 0.3);
 		filter_correct(filtered_delta);
 	}
 }
