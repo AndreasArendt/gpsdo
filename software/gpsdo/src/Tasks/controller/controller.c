@@ -5,6 +5,7 @@
 #include "pps.h"
 #include "flatbuf_message_builder.h"
 #include "manager.h"
+#include "gpsdo_config.h"
 
 #include <math.h>
 
@@ -14,15 +15,9 @@
 #define DAC_SYNC_PORT GPIOA
 #define DAC_SYNC_PIN GPIO_PIN_15
 
-#define DAC_VREF 4.096f
-
-static const float V_Max = 3.0;
-static const float V_Min = 0.5;
-static const float V_Mid = (V_Max - V_Min) / 2;
-
-static const float Kp = 0.4f;
-static const float Ki = 0.0002f;
-static const float Kd = 0.006f;
+static const float Kp = 0.01f;
+static const float Ki = 0.003f;
+static const float Kd = 0.005f;
 
 void DAC_Select() {
 	HAL_GPIO_WritePin(DAC_CS_GPIO_Port, DAC_CS_Pin, GPIO_PIN_RESET);
@@ -66,11 +61,11 @@ float control(float freq_offset, float freq_drift, float dt) {
 	static float f_integral = 0.0f;
 	f_integral += freq_offset * dt;
 
-	float fun_Kp = tanhf(freq_offset/2) * Kp;
+	float fun_Kp = Kp; //tanhf(freq_offset/2) * Kp;
 
-	float p = V_Mid + fun_Kp * freq_drift;
+	float p = V_Mid + fun_Kp * freq_offset;
 	float i = Ki * f_integral;
-	float d = Kd * freq_drift;
+	float d = Kd * freq_drift * dt;
 
 	float v_out = p + i + d;
 
@@ -89,16 +84,18 @@ void controllerTask(void *argument) {
 	filter_init();
 	DAC_SetVoltage(2.0);
 
+	static float volt = 0.0f;
+
 	while (1) {
 		osSemaphoreAcquire(xPPSSemaphoreHandle, osWaitForever);
 		toggle_led_orange();
 		uint32_t delta = pps_get_delta();
 
-		filter_step(delta);
+		filter_step(delta);//, volt);
 		float freq_off_Hz = filter_get_frequency_offset_Hz();
 		float freq_drift_HzDs = filter_get_frequency_drift_HzDs();
 
-		float volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
+		volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
 		DAC_SetVoltage(volt);
 
 		// sent flatbuf

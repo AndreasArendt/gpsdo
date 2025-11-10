@@ -6,12 +6,11 @@
  */
 
 #include "filter.h"
+#include "gpsdo_config.h"
 #include <arm_math.h>
 #include <string.h>
 
 static const float T = 1.0f;
-static const float F_OSC_HZ = 10.0e6f;
-static const float EXPECTED_CTR = 625000.0f;
 static const float R = ((F_OSC_HZ / EXPECTED_CTR) * (F_OSC_HZ / EXPECTED_CTR))
 		/ 12.0f;
 static const uint32_t MAX_JITTER = 2u;
