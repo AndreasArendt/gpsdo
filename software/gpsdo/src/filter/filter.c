@@ -84,9 +84,12 @@ void filter_init(void) {
 	memset(S_data, 0, sizeof(S_data));
 }
 
-void filter_predict(void) {
+void filter_predict(float voltage_ctrl) {
 	// X_pred = F * X
 	arm_mat_mult_f32(&F, &X, &X_pred);
+
+	// X_pred = X_pred + Bu (very implicit!)
+	X_pred.pData[0] += (voltage_ctrl - V_Mid) * Ku_HzDV;
 
 	// P = F * P * FT + Q
 	arm_mat_mult_f32(&F, &P, &temp_2x2a); // FP
@@ -100,7 +103,7 @@ float filter_ema(float x, float prev_y, float alpha) {
 }
 
 // return true, if value is considered good
-bool filter_pre_check(uint32_t delta) {
+bool filter_pre_check(float delta) {
 	return ((delta <= (EXPECTED_CTR + MAX_JITTER))
 			&& (delta >= (EXPECTED_CTR - MAX_JITTER)));
 }
@@ -138,10 +141,10 @@ void filter_correct(float delta) {
 	mat_copy_f32(&temp_2x2a, &P); // copy result back in P
 }
 
-void filter_step(uint32_t delta)
+void filter_step(float delta, float voltage_ctrl)
 {
 	static float filtered_delta = 0.0f;
-	filter_predict();
+	filter_predict(voltage_ctrl);
 
 	if (filtered_delta == 0.0f)
 		filtered_delta = delta;

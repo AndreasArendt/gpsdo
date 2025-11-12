@@ -12,12 +12,12 @@
 #include <stdbool.h>
 
 void filter_init(void);
-void filter_predict(void);
+void filter_predict(float voltage_ctrl);
 void filter_correct(float delta);
 
-void filter_step(uint32_t delta);
+void filter_step(float delta, float voltage_ctrl);
 
-bool filter_pre_check(uint32_t delta);
+bool filter_pre_check(float delta);
 float filter_ema(float x, float prev_y, float alpha);
 
 float filter_get_frequency_offset_Hz();

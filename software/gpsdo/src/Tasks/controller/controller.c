@@ -15,9 +15,9 @@
 #define DAC_SYNC_PORT GPIOA
 #define DAC_SYNC_PIN GPIO_PIN_15
 
-static const float Kp = 0.01f;
-static const float Ki = 0.003f;
-static const float Kd = 0.005f;
+static const float Kp = 0.0045f;
+static const float Ki = 0.0000245f;
+static const float Kd = 0.000225f;
 
 void DAC_Select() {
 	HAL_GPIO_WritePin(DAC_CS_GPIO_Port, DAC_CS_Pin, GPIO_PIN_RESET);
@@ -48,10 +48,10 @@ void DAC_AD5541A_set_value(uint16_t value) {
 
 void DAC_SetVoltage(float voltage) {
 	// Clamp and scale
-	if (voltage < 0.0f)
-		voltage = 0.0f;
-	if (voltage > 3.0f)
-		voltage = DAC_VREF;
+	if (voltage < V_Min)
+		voltage = V_Min;
+	if (voltage > V_Max)
+		voltage = V_Max;
 
 	uint16_t value = (uint16_t) roundf((voltage / DAC_VREF) * 65535.0f);
 	DAC_AD5541A_set_value(value);
@@ -61,14 +61,15 @@ float control(float freq_offset, float freq_drift, float dt) {
 	static float f_integral = 0.0f;
 	f_integral += freq_offset * dt;
 
-	float fun_Kp = Kp; //tanhf(freq_offset/2) * Kp;
-
-	float p = V_Mid + fun_Kp * freq_offset;
+	float p = V_Mid + Kp * freq_offset;
 	float i = Ki * f_integral;
 	float d = Kd * freq_drift * dt;
 
-	float v_out = p + i + d;
+	//float ff = V_Mid - freq_offset / 7.5;
 
+	float v_out = p + i + d; // + ff;
+
+	// clamping
 	if (v_out > V_Max)
 		v_out = V_Max;
 	if (v_out < V_Min)
@@ -81,21 +82,20 @@ void controllerTask(void *argument) {
 	while (!hal_initialized)
 		osDelay(100);
 
-	filter_init();
-	DAC_SetVoltage(2.0);
+	static float volt = V_Mid;
 
-	static float volt = 0.0f;
+	filter_init();
 
 	while (1) {
 		osSemaphoreAcquire(xPPSSemaphoreHandle, osWaitForever);
 		toggle_led_orange();
 		uint32_t delta = pps_get_delta();
 
-		filter_step(delta);//, volt);
+		filter_step(delta, volt);
 		float freq_off_Hz = filter_get_frequency_offset_Hz();
 		float freq_drift_HzDs = filter_get_frequency_drift_HzDs();
 
-		volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
+		//volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
 		DAC_SetVoltage(volt);
 
 		// sent flatbuf

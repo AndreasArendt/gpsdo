@@ -1,43 +1,25 @@
-import os
-import sys
+import csv
 import re
 import matplotlib.pyplot as plt
+import kalman
 
-try:
-    from .kalman import KalmanFilter
-except ImportError:
-    # When run directly inside gpsdo/tools/com/
-    pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-    if pkg_root not in sys.path:
-        sys.path.insert(0, pkg_root)
-    from gpsdo.tools.com.kalman import KalmanFilter    
-
-filename = r"reader1.log"
+filename = r"logs/20251110_213208.csv"
 
 freq_offset_Hz = []
 drift_Hz_per_s = []
 
 try:
-    kf = KalmanFilter(output_alpha=0.2)
+    kf = kalman.KalmanFilter(output_alpha=0.2)
     with open(filename) as file:
-        while line := file.readline():
-            _delta_re = re.compile(r"measurement=(\d+(?:\.\d+)?)", re.IGNORECASE)
-            m = _delta_re.search(line.strip())
+        reader = csv.DictReader(file)
 
-            measurement = None
-            if m:
-                try:
-                    meas = float(m.group(1))
-                except ValueError:
-                    continue
-            else:
-                continue
-
-            filtered = kf.update(meas)       
+        for row in reader:                        
+            measurement = row["raw_counter_value"]
+            
+            filtered = kf.update(measurement)       
             freq_offset_Hz.append(filtered["freq_offset_Hz"])
             drift_Hz_per_s.append(filtered["drift_Hz_per_s"])
-
-            #print(f"measurement={meas} filtered={filtered}")
+            
 except KeyboardInterrupt:
     print("stopping read loop by user")
 
