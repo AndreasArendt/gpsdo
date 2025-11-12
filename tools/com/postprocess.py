@@ -3,18 +3,18 @@ import re
 import matplotlib.pyplot as plt
 import kalman
 
-filename = r"logs/20251110_213208.csv"
+filename = r"logs/20251112_210833.csv"
 
 freq_offset_Hz = []
 drift_Hz_per_s = []
 
 try:
-    kf = kalman.KalmanFilter(output_alpha=0.2)
+    kf = kalman.KalmanFilter()
     with open(filename) as file:
         reader = csv.DictReader(file)
 
         for row in reader:                        
-            measurement = row["raw_counter_value"]
+            measurement = float(row["raw_counter_value"])
             
             filtered = kf.update(measurement)       
             freq_offset_Hz.append(filtered["freq_offset_Hz"])
