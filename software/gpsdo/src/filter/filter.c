@@ -9,21 +9,22 @@
 #include "gpsdo_config.h"
 #include <arm_math.h>
 #include <string.h>
+#include <math.h>
 
 static const float T = 1.0f;
-static const float R = ((F_OSC_HZ / EXPECTED_CTR) * (F_OSC_HZ / EXPECTED_CTR))
-		/ 12.0f;
+static const float R = (1.0f / 12.0f) / ((float)EXPECTED_CTR * (float)EXPECTED_CTR);
 static const uint32_t MAX_JITTER = 2u;
 
 // State & matrices storage
 static float F_data[9] = { 1.0f, T,    0.5*T*T,
 		                   0.0f, 1.0f, T,
                            0.0f, 0.0f, 1.0f};
-static float P_data[9] = { 10.0f,  0.0f,  0.0f,
-                            0.0f, 10.0f,  0.0f,
-                            0.0f,  0.0f, 10.0f};
+static float P_data[9] = { 1e-3,  0.0f,  0.0f,
+                            0.0f, 100.0f,  0.0f,
+                            0.0f,  0.0f, 10000.0f};
 static float Q_data[9] = { 0 };
 static float H_data[3] = { 1.0f, 0.0f, 0.0f };
+static float HT_data[3] = { 1.0f, 0.0f, 0.0f };
 static float X_data[3] = { 0.0f, 0.0f, 0.0f };
 static float X_pred_data[3] = { 0.0f, 0.0f, 0.0f };
 
@@ -75,7 +76,7 @@ void filter_init(void) {
 	arm_mat_init_f32(&P, 3, 3, P_data);
 	arm_mat_init_f32(&Q, 3, 3, Q_data);
 	arm_mat_init_f32(&H, 1, 3, H_data);
-	arm_mat_init_f32(&HT, 3, 1, H_data);
+	arm_mat_init_f32(&HT, 3, 1, HT_data);
 	arm_mat_init_f32(&X, 3, 1, X_data);
 	arm_mat_init_f32(&X_pred, 3, 1, X_pred_data);
 	arm_mat_init_f32(&K, 3, 1, K_data);
@@ -144,6 +145,10 @@ void filter_correct(float delta) {
 	arm_mat_mult_f32(&H, &P, &temp_1x3);  // HP
 	arm_mat_mult_f32(&temp_1x3, &HT, &S); // HPHT
 	S.pData[0] += R;                      // HPHP+R
+
+	// numeric problem — skip update
+	if (!isfinite(S.pData[0]) || fabsf(S.pData[0]) < 1e-12f)
+	    return;
 
 	float S_inv = 1.0f / S.pData[0];
 

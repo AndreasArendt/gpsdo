@@ -57,17 +57,12 @@ void DAC_SetVoltage(float voltage) {
 	DAC_AD5541A_set_value(value);
 }
 
-float control(float freq_offset, float freq_drift, float dt) {
-	static float f_integral = 0.0f;
-	f_integral += freq_offset * dt;
+float control(float phase_cnt, float freq_offset, float freq_drift) {
+	float p = Kp * freq_offset;
+	float i = Ki * phase_cnt;
+	float d = Kd * freq_drift;
 
-	float p = V_Mid + Kp * freq_offset;
-	float i = Ki * f_integral;
-	float d = Kd * freq_drift * dt;
-
-	//float ff = V_Mid - freq_offset / 7.5;
-
-	float v_out = p + i + d; // + ff;
+	float v_out = V_Mid + p + i + d;
 
 	// clamping
 	if (v_out > V_Max)
