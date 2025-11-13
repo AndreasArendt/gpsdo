@@ -1,8 +1,9 @@
 namespace gpsdo;
 
 table Status {  
+  phase_cnt: float;
   freq_error_hz: float;
-  freq_drift_hz_s: float;
+  freq_drift_hz_s: float;  
   voltage_control_v: float;
   voltage_measured_v: float;
   temperature_c: float;

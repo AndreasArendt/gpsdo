@@ -27,12 +27,13 @@ static void flatbuf_send(uint16_t msg_id, const uint8_t *payload,
 	xQueueSend(xUsbTxQueue, &msg, 0);
 }
 
-void flatbuf_send_status(float freq_error, float freq_drift, float vctrl,
+void flatbuf_send_status(float phase_cnt, float freq_error, float freq_drift, float vctrl,
 		float vmeas, float temp, uint32_t raw_counter_value) {
 	flatcc_builder_t builder;
 	flatcc_builder_init(&builder);
 
 	gpsdo_Status_start_as_root(&builder);
+	gpsdo_Status_phase_cnt_add(&builder, phase_cnt);
 	gpsdo_Status_freq_error_hz_add(&builder, freq_error);
 	gpsdo_Status_freq_drift_hz_s_add(&builder, freq_drift);
 	gpsdo_Status_voltage_control_v_add(&builder, vctrl);

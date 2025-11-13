@@ -25,85 +25,98 @@ class Status(object):
         self._tab = flatbuffers.table.Table(buf, pos)
 
     # Status
-    def FreqErrorHz(self):
+    def PhaseCnt(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
     # Status
-    def FreqDriftHzS(self):
+    def FreqErrorHz(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
     # Status
-    def VoltageControlV(self):
+    def FreqDriftHzS(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
     # Status
-    def VoltageMeasuredV(self):
+    def VoltageControlV(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
     # Status
-    def TemperatureC(self):
+    def VoltageMeasuredV(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
     # Status
-    def RawCounterValue(self):
+    def TemperatureC(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
+        return 0.0
+
+    # Status
+    def RawCounterValue(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 0
 
 def StatusStart(builder):
-    builder.StartObject(6)
+    builder.StartObject(7)
 
 def Start(builder):
     StatusStart(builder)
 
+def StatusAddPhaseCnt(builder, phaseCnt):
+    builder.PrependFloat32Slot(0, phaseCnt, 0.0)
+
+def AddPhaseCnt(builder, phaseCnt):
+    StatusAddPhaseCnt(builder, phaseCnt)
+
 def StatusAddFreqErrorHz(builder, freqErrorHz):
-    builder.PrependFloat32Slot(0, freqErrorHz, 0.0)
+    builder.PrependFloat32Slot(1, freqErrorHz, 0.0)
 
 def AddFreqErrorHz(builder, freqErrorHz):
     StatusAddFreqErrorHz(builder, freqErrorHz)
 
 def StatusAddFreqDriftHzS(builder, freqDriftHzS):
-    builder.PrependFloat32Slot(1, freqDriftHzS, 0.0)
+    builder.PrependFloat32Slot(2, freqDriftHzS, 0.0)
 
 def AddFreqDriftHzS(builder, freqDriftHzS):
     StatusAddFreqDriftHzS(builder, freqDriftHzS)
 
 def StatusAddVoltageControlV(builder, voltageControlV):
-    builder.PrependFloat32Slot(2, voltageControlV, 0.0)
+    builder.PrependFloat32Slot(3, voltageControlV, 0.0)
 
 def AddVoltageControlV(builder, voltageControlV):
     StatusAddVoltageControlV(builder, voltageControlV)
 
 def StatusAddVoltageMeasuredV(builder, voltageMeasuredV):
-    builder.PrependFloat32Slot(3, voltageMeasuredV, 0.0)
+    builder.PrependFloat32Slot(4, voltageMeasuredV, 0.0)
 
 def AddVoltageMeasuredV(builder, voltageMeasuredV):
     StatusAddVoltageMeasuredV(builder, voltageMeasuredV)
 
 def StatusAddTemperatureC(builder, temperatureC):
-    builder.PrependFloat32Slot(4, temperatureC, 0.0)
+    builder.PrependFloat32Slot(5, temperatureC, 0.0)
 
 def AddTemperatureC(builder, temperatureC):
     StatusAddTemperatureC(builder, temperatureC)
 
 def StatusAddRawCounterValue(builder, rawCounterValue):
-    builder.PrependUint32Slot(5, rawCounterValue, 0)
+    builder.PrependUint32Slot(6, rawCounterValue, 0)
 
 def AddRawCounterValue(builder, rawCounterValue):
     StatusAddRawCounterValue(builder, rawCounterValue)

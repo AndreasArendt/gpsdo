@@ -29,6 +29,7 @@ def read_loop(ser, log):
     # Write header
     csv_writer.writerow([
         'timestamp_s',
+        'phase_cnt',
         'freq_error_hz',
         'freq_drift_hz_s',
         'voltage_control_v',
@@ -36,7 +37,8 @@ def read_loop(ser, log):
         'temperature_c',
         'raw_counter_value',
         'filtered_freq_offset_hz',
-        'filtered_drift_hz_s'
+        'filtered_drift_hz_s',
+        'phase_cnt_post'
     ])
     csv_file.flush()
 
@@ -83,6 +85,7 @@ def read_loop(ser, log):
                 try:
                     status = Status.GetRootAsStatus(payload, 0)
 
+                    phase_cnt = status.PhaseCnt()
                     freq_error_hz = status.FreqErrorHz()
                     freq_drift_hz_s = status.FreqDriftHzS()
                     voltage_control_v = status.VoltageControlV()
@@ -90,6 +93,7 @@ def read_loop(ser, log):
                     temperature_c = status.TemperatureC()
                     raw_counter_value = status.RawCounterValue()
 
+                    log.info(f"Phase (Count): {phase_cnt:.6f}")
                     log.info(f"Freq Error (Hz): {freq_error_hz:.6f}")
                     log.info(f"Freq Drift (Hz/s): {freq_drift_hz_s:.6f}")
                     log.info(f"Voltage Control (V): {voltage_control_v:.3f}")
@@ -100,12 +104,14 @@ def read_loop(ser, log):
                     timestamp = time.time() - start_time
                     filtered = kf.update(raw_counter_value)
 
-                    freq_offset_post = filtered["freq_offset_Hz"]
-                    freq_drift_post = filtered["drift_Hz_per_s"]
+                    phase_cnt_post = filtered["phase"]                                    
+                    freq_offset_post = filtered["freq_offset"]
+                    freq_drift_post = filtered["freq_drift"]
 
                     # Log to CSV
                     csv_writer.writerow([
                         timestamp,
+                        phase_cnt,
                         freq_error_hz,
                         freq_drift_hz_s,
                         voltage_control_v,
@@ -113,11 +119,12 @@ def read_loop(ser, log):
                         temperature_c,
                         raw_counter_value,
                         freq_offset_post,
-                        freq_drift_post
+                        freq_drift_post,
+                        phase_cnt_post
                     ])
                     csv_file.flush()
 
-                    plotter.update(timestamp, freq_offset_post, freq_drift_post, freq_error_hz, freq_drift_hz_s, voltage_control_v, voltage_measured_v)
+                    plotter.update(timestamp, phase_cnt_post, freq_offset_post, freq_drift_post, phase_cnt, freq_error_hz, freq_drift_hz_s, voltage_control_v, voltage_measured_v)                    
                 except Exception as e:
                     log.warning(f"Failed to parse Status message: {e}")
                     continue

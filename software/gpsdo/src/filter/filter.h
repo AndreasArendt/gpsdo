@@ -20,6 +20,7 @@ void filter_step(float delta, float voltage_ctrl);
 bool filter_pre_check(float delta);
 float filter_ema(float x, float prev_y, float alpha);
 
+float filter_get_phase_count();
 float filter_get_frequency_offset_Hz();
 float filter_get_frequency_drift_HzDs();
 

@@ -92,6 +92,7 @@ void controllerTask(void *argument) {
 		uint32_t delta = pps_get_delta();
 
 		filter_step(delta, volt);
+		float phase_cnt = filter_get_phase_count();
 		float freq_off_Hz = filter_get_frequency_offset_Hz();
 		float freq_drift_HzDs = filter_get_frequency_drift_HzDs();
 
@@ -99,6 +100,6 @@ void controllerTask(void *argument) {
 		DAC_SetVoltage(volt);
 
 		// sent flatbuf
-		flatbuf_send_status(freq_off_Hz, freq_drift_HzDs, volt, get_volt_meas(), get_temperature(), delta);
+		flatbuf_send_status(phase_cnt, freq_off_Hz, freq_drift_HzDs, volt, get_volt_meas(), get_temperature(), delta);
 	}
 }
