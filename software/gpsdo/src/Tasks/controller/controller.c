@@ -91,8 +91,8 @@ void controllerTask(void *argument) {
 		float freq_off_Hz = filter_get_frequency_offset_Hz();
 		float freq_drift_HzDs = filter_get_frequency_drift_HzDs();
 
-		//volt = control(-freq_off_Hz, -freq_drift_HzDs, 1.0f);
-		DAC_SetVoltage(volt);
+		volt = control(-phase_cnt, -freq_off_Hz, -freq_drift_HzDs);
+		//DAC_SetVoltage(volt);
 
 		// sent flatbuf
 		flatbuf_send_status(phase_cnt, freq_off_Hz, freq_drift_HzDs, volt, get_volt_meas(), get_temperature(), delta);
