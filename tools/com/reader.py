@@ -104,7 +104,7 @@ def read_loop(ser, log):
                     timestamp = time.time() - start_time
                     filtered = kf.update(raw_counter_value)
 
-                    phase_cnt_post = filtered["phase"]                                    
+                    phase_cnt_post = filtered["phase_error_cycles"]                                    
                     freq_offset_post = filtered["freq_offset"]
                     freq_drift_post = filtered["freq_drift"]
 
