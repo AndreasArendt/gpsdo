@@ -1,21 +1,18 @@
-import struct
 import time
 import csv
 import os
 import numpy as np
 from datetime import datetime
 from kalman import KalmanFilter
-from schemas.gpsdo.Status import Status
+from flatbuffer_reader import FlatbufferStreamReader
+from schemas.gpsdo.Payload import Payload
 from realtime_plot import RealtimePlotter
-
-FLATBUF_MAGIC = 0xB00B
-MSG_ID_STATUS = 1
-MAX_MESSAGE_SIZE = 1024
 
 def read_loop(ser, log):    
     kf = KalmanFilter(1.0, 10_000_000.0, 5_000_000.0, 1e-6, 0.08)
     start_time = time.time()
     plotter = RealtimePlotter()
+    fb_reader = FlatbufferStreamReader(ser, log)
 
     # Setup CSV logging
     csv_dir = "logs"
@@ -45,46 +42,18 @@ def read_loop(ser, log):
 
     log.info(f"Waiting for FlatBuffer messages... CSV logging to {csv_filename}")
 
-    header_fmt = "<HHH"  # little-endian: magic, msg_id, len
-    header_size = struct.calcsize(header_fmt)
-
     try:
         while True:
-            # --- Read header ---
-            header = ser.read(header_size)
-            if len(header) < header_size:
+            parsed = fb_reader.read_next()
+            if parsed is None:
                 continue
 
-            magic, msg_id, msg_len = struct.unpack(header_fmt, header)
+            if parsed.payload_type == Payload.kf_debug:
+                a = 1
 
-            # --- Validate magic ---
-            if magic != FLATBUF_MAGIC:
-                log.warning(f"Bad magic 0x{magic:04X}, searching for next valid frame...")
-                magic = resync(ser, log)
-                if magic != FLATBUF_MAGIC:
-                    continue
-                # read remaining header bytes
-                rest_header = ser.read(header_size - 2)
-                if len(rest_header) < (header_size - 2):
-                    continue
-                header = struct.pack("<H", magic) + rest_header
-                magic, msg_id, msg_len = struct.unpack(header_fmt, header)
-
-            # --- Validate message length ---
-            if msg_len <= 0 or msg_len > MAX_MESSAGE_SIZE:
-                log.warning(f"Invalid message length {msg_len}, skipping")
-                continue
-
-            # --- Read payload ---
-            payload = ser.read(msg_len)
-            if len(payload) < msg_len:
-                log.warning("Incomplete message, skipping")
-                continue
-
-            # --- Dispatch ---
-            if msg_id == MSG_ID_STATUS:
+            if parsed.payload_type == Payload.Status:
                 try:
-                    status = Status.GetRootAsStatus(payload, 0)
+                    status = parsed.payload
 
                     phase_cnt = status.PhaseCnt()
                     freq_error_hz = status.FreqErrorHz()
@@ -102,7 +71,7 @@ def read_loop(ser, log):
                     log.info(f"Temperature (C): {temperature_c:.2f}")
                     log.info(f"Raw Counter: {raw_counter_value}")
 
-                    timestamp = time.time() - start_time
+                    timestamp = parsed.timestamp_s or (time.time() - start_time)
                     kf.predict()
                     X, P, k, y = kf.update(raw_counter_value)
 
@@ -130,27 +99,23 @@ def read_loop(ser, log):
                 except Exception as e:
                     log.warning(f"Failed to parse Status message: {e}")
                     continue
+            elif parsed.payload_type == Payload.kf_debug:
+                # For now, just log key fields to confirm reception; expand handling as needed
+                dbg = parsed.payload
+                try:
+                    state = dbg.State()
+                    corr = dbg.Correction()
+                    log.info(
+                        f"kf_debug ts={parsed.timestamp_s:.3f} iter={dbg.KfIteration()} outliers={dbg.OutlierCount()} "
+                        f"drift={state.Drift() if state else 'n/a'} "
+                        f"z={corr.Z() if corr else 'n/a'}"
+                    )
+                except Exception as e:
+                    log.warning(f"Failed to parse kf_debug payload: {e}")
+                    continue
             else:
-                log.info(f"Unknown msg_id={msg_id}, skipping {msg_len} bytes")
+                log.info(f"Unhandled payload_type={parsed.payload_type}, msg_id={parsed.msg_id}")
                 continue
     finally:
         csv_file.close()
         log.info(f"CSV file closed: {csv_filename}")
-
-
-def resync(ser, log):
-    """Scan stream for next magic word (2-byte sliding window)"""
-    window = bytearray(2)
-    idx = 0
-    log.debug("Resyncing...")
-    while True:
-        b = ser.read(1)
-        if not b:
-            continue
-        window[idx] = b[0]
-        idx = 1 - idx  # toggle index to maintain sliding 2-byte window
-        # interpret as little-endian
-        val = window[0] | (window[1] << 8)
-        if val == FLATBUF_MAGIC:
-            log.info("Resynced to magic word")
-            return val

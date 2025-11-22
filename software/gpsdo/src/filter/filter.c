@@ -8,6 +8,8 @@
 #include <string.h>
 #include <math.h>
 
+static void filter_fill_debug(float S_val, float mahal_dist);
+
 #define ARM_MATH_MATRIX_CHECK 1
 #define MAHAL_THRESHOLD   9.0f   // 3-sigma rejection
 
@@ -216,7 +218,7 @@ void filter_step(float raw, float v) {
 }
 
 
-void filter_fill_debug(float S_val, float mahal_dist) {
+static void filter_fill_debug(float S_val, float mahal_dist) {
     kf_snapshot.timestamp_s = 0.0f; //get_timestamp_seconds();
 
     kf_snapshot.x[0] = X_data[0];

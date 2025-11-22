@@ -4,7 +4,7 @@
 #include "hal.h"
 
 /* --- CONFIGURATION --- */
-#define USB_EP_MPS            64     // Full-Speed endpoint max packet size
+#define USB_EP_MPS            256     // Full-Speed endpoint max packet size
 #define USB_MSG_MAX_SIZE      USB_EP_MPS
 #define USB_TX_QUEUE_LENGTH   16
 #define USB_RX_QUEUE_LENGTH   8
