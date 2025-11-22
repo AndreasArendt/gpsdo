@@ -4,6 +4,8 @@
 
 This project aims to create an **open-source and affordable** GPSDO from scratch, including designing custom hardware (PCB) and developing the supporting software.
 
+![PCB v2](doc/gpsdo.png "PCB Version 2")
+
 # Features
 * Combines GNSS PPS with a high-precision OCXO
 * Fully open-source hardware and software
