@@ -1,93 +1,95 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 class KalmanFilter:
-    def __init__(self, T=1.0, f_osc=10_000_000.0, expected_count=625_000.0,
-                 q=1e-6, sample_var_hz2=0.08, ema_alpha=0.175):
-        self.T = float(T)
-        self.f_osc = float(f_osc)
-        self.expected_count = float(expected_count)   # expected counts per PPS gate
-        self. ema_alpha = float(ema_alpha)
+    """
+    3-state phase / frequency / drift Kalman Filter optimized for:
+        - 10 MHz → 5 MHz divided GPSDO sampling
+        - fast initial acquisition
+        - long-term stability for frequency control
+    """
 
-        self.ema_phase = 0.0
+    def __init__(self, T=1.0, f_osc=10_000_000.0, expected_count=5_000_000.0, q=1e-6, sample_var_hz2=0.08):
+        self.T = T
+        self.f_osc = f_osc
+        self.expected_count = expected_count
 
-        # State: [phase_cycles, freq_Hz, drift_Hz_per_s]
+        # State Transition matrix
         self.A = np.array([
-            [1.0, self.T, 0.5*self.T**2],
-            [0.0, 1.0,     self.T      ],
-            [0.0, 0.0,     1.0        ]
+            [1.0,   T,    0.5*T**2],
+            [0.0, 1.0,    T],
+            [0.0, 0.0,   1.0]
         ])
 
-        # 2x3 H (phase, freq)
-        self.H = np.array([[1.0, 0.0, 0.0],   # phase in cycles
-                           [0.0, 1.0, 0.0]])  # freq in Hz
-
-        # Process noise - q is spectral density of freq drift
-        self.q = float(q)
-        self.Q = self.q * np.array([
-            [self.T**5/20, self.T**4/8, self.T**3/6],
-            [self.T**4/8,  self.T**3/3, self.T**2/2],
-            [self.T**3/6,  self.T**2/2, self.T     ]
+        # Measurement Model
+        self.H = np.array([
+            [1.0, 0.0, 0.0],   # phase
+            [0.0, 1.0, 0.0]    # frequency
         ])
 
-        # Measurement noise: Phase noise [cycles^2], Freq Noise in [Hz^2]                            
-        r_freq_hz2 = sample_var_hz2             
-        r_phase_cycles2 = sample_var_hz2 / (f_osc/expected_count)**2
-      
-        self.R = np.diag([float(r_phase_cycles2), float(r_freq_hz2)])        
-
-        # initial state and covariance
-        self.x = np.array([0.0, 0.0, 0.0])
-        self.P = np.diag([0.5**2, 5.0**2, 0.1**2])
-
-        self.prev_count = None
-
-    def _measurements(self, raw_count):
-        phase_error = raw_count - self.expected_count
-        self.ema_phase = self.ema_alpha * phase_error + (1 - self.ema_alpha) * self.ema_phase
+        # Process noise
+        Q_unit = np.array([
+            [T**5/20, T**4/8, T**3/6],
+            [T**4/8,  T**3/3, T**2/2],
+            [T**3/6,  T**2/2, T]
+        ])
+        self.Q = q * Q_unit
         
-        # Phase in cycles
-        z_phase = self.ema_phase
+        # Measurement noise
+        f_div = f_osc / expected_count
+        r_freq_hz2 = float(sample_var_hz2)
+        r_phase_cycles2 = float(sample_var_hz2 / (f_div**2))
 
-        # Frequency in Hz: (phase error / expected count) * f_osc
-        z_freq_hz = z_phase / self.expected_count * self.f_osc
+        self.R = np.diag([r_phase_cycles2, r_freq_hz2])
+        
+        # Initial State & Covariance        
+        self.x = np.zeros(3)
 
-        return z_phase, z_freq_hz
+        self.P = np.diag([
+            (0.20)**2,    # ±0.2 cycles initial phase uncertainty
+            (2.0)**2,     # ±2 Hz     initial freq
+            (0.02)**2     # ±0.02 Hz/s drift (tight but realistic)
+        ])
+
+    def _measurement(self, raw_count):
+        """
+        Convert raw counter values to phase (cycles) and frequency (Hz)
+        """
+        z_phase = raw_count - self.expected_count
+
+        # frequency = delta_phase__cycles * f_osc
+        z_freq = z_phase * (self.f_osc / self.expected_count)
+
+        return np.array([z_phase, z_freq])
+
+    def predict(self):
+        self.x = self.A @ self.x
+        self.P = self.A @ self.P @ self.A.T + self.Q
+        return self.x, self.P
 
     def update(self, raw_count):
-        z_phase, z_freq_hz = self._measurements(raw_count)
-        z = np.array([z_phase, z_freq_hz])
+        z = self._measurement(raw_count)
 
-        # Predict
-        x_pred = self.A @ self.x
-        P_pred = self.A @ self.P @ self.A.T + self.Q
+        # Innovation & Kalman Gain
+        S = self.H @ self.P @ self.H.T + self.R
+        K = self.P @ self.H.T @ np.linalg.inv(S)
 
-        # Kalman update
-        S = self.H @ P_pred @ self.H.T + self.R
-        K = P_pred @ self.H.T @ np.linalg.inv(S)
-        
-        y = z - (self.H @ x_pred)
-        
-        # wrap phase innovation if necessary
+        y = z - (self.H @ self.x)
+
+        # Proper ±0.5 wrap before update
         if y[0] > 0.5:
             y[0] -= 1.0
         elif y[0] < -0.5:
             y[0] += 1.0
 
-        self.x = x_pred + (K @ y)
-        IminusKH = (np.eye(3) - K @ self.H) @ P_pred
-        self.P = IminusKH @ P_pred @ IminusKH.T + K @ self.R @ K.T
+        # State update
+        self.x = self.x + K @ y
 
-        # keep phase fractional
-        int_cycles = np.round(self.x[0])
-        self.x[0] -= int_cycles
+        # Joseph form
+        I = np.eye(3)
+        I_KH = I - K @ self.H
+        self.P = I_KH @ self.P @ I_KH.T + K @ self.R @ K.T
 
-        return self.x.copy(), self.P.copy(), K, y, self.ema_phase
-    
-    def estimate_R_from_counts(self, raw_counts, f_osc=10e6, N=625000.0):
-        # convert to instantaneous measured frequency (Hz)
-        z_freq = (raw_counts - N) / N * f_osc   # array in Hz
-        # remove slow trend (detrend) because R should reflect measurement noise not slow drift
-        z_detrended = z_freq - np.polyval(np.polyfit(np.arange(len(z_freq)), z_freq, 1), np.arange(len(z_freq)))
-        sample_var = np.var(z_detrended, ddof=1)
-        return sample_var, z_freq, z_detrended
+        # Keep state phase fractional for numerical stability
+        self.x[0] -= np.round(self.x[0])
+
+        return self.x, self.P, K, y

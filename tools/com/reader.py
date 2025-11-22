@@ -2,6 +2,7 @@ import struct
 import time
 import csv
 import os
+import numpy as np
 from datetime import datetime
 from kalman import KalmanFilter
 from schemas.gpsdo.Status import Status
@@ -11,8 +12,8 @@ FLATBUF_MAGIC = 0xB00B
 MSG_ID_STATUS = 1
 MAX_MESSAGE_SIZE = 1024
 
-def read_loop(ser, log):
-    kf = KalmanFilter()
+def read_loop(ser, log):    
+    kf = KalmanFilter(1.0, 10_000_000.0, 5_000_000.0, 1e-6, 0.08)
     start_time = time.time()
     plotter = RealtimePlotter()
 
@@ -102,11 +103,11 @@ def read_loop(ser, log):
                     log.info(f"Raw Counter: {raw_counter_value}")
 
                     timestamp = time.time() - start_time
-                    filtered = kf.update(raw_counter_value)
+                    X, P, k, y = kf.update(raw_counter_value)
 
-                    phase_cnt_post = filtered["phase_error_cycles"]                                    
-                    freq_offset_post = filtered["freq_offset"]
-                    freq_drift_post = filtered["freq_drift"]
+                    phase_cnt_post = X[0]
+                    freq_offset_post = X[1]
+                    freq_drift_post = X[2]
 
                     # Log to CSV
                     csv_writer.writerow([
