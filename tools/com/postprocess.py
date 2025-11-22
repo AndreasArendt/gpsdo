@@ -1,14 +1,9 @@
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
-import imm
-import pandas as pd
+import kalman
 
-#filename = r"logs/20251110_213208.csv"
-#filename = r"logs/20251110_214145.csv"
-#filename = r"logs/20251111_210441.csv"
-filename = r"logs/20251111_212216.csv"
-#filename = r"logs/20251113_214011.csv"
+filename = r"logs/20251122_104801.csv"
 
 phase = []
 freq_offset = []
@@ -22,12 +17,7 @@ def moving_average(a, n=3):
     return ret[n - 1:] / float(n)
 
 try:
-    kf = imm.IMMKalman()
-
-    # determine R
-    # data = pd.read_csv(filename)
-    # sample_var, z_freq, z_detrended = kf.estimate_R_from_counts(np.array(data["raw_counter_value"].tolist())/16)
-    # print(f"sample_var: {sample_var}, z_freq: {z_freq}, z_detrended: {z_detrended}")
+    kf = kalman.KalmanFilter()
 
     with open(filename) as file:
         reader = csv.DictReader(file)
@@ -46,19 +36,28 @@ try:
 except KeyboardInterrupt:
     print("stopping read loop by user")
 
-plt.subplot(3, 1, 1)
+
+plt.subplot(4, 1, 1)
 plt.plot(phase)
 plt.ylabel('phase')
 
-plt.subplot(3, 1, 2)
+plt.subplot(4, 1, 2)
 plt.plot(freq_offset)
-plt.plot(moving_average((np.array(raw_cnt)-625_000.0)*16.0, n=123), marker='o')
-plt.plot(np.sqrt(cov__f))
+plt.plot(moving_average((np.array(raw_cnt)-5_000_000.0)*2.0, n=123))
+plt.fill_between(
+    np.arange(len(freq_offset)),
+    freq_offset - 3*np.sqrt(cov__f),
+    freq_offset + 3*np.sqrt(cov__f),
+    alpha=0.5
+)
 plt.ylabel('freq_offset')
 
-plt.subplot(3, 1, 3)
+plt.subplot(4, 1, 3)
 plt.plot(freq_drift)
 plt.ylabel('freq_drift')
 plt.ylabel('ema phase (Count)')
+
+plt.subplot(4, 1, 4)
+plt.plot(raw_cnt)
 
 plt.show()
