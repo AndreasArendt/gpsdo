@@ -17,10 +17,54 @@
 #define flatbuffers_extension "bin"
 #endif
 
+typedef flatbuffers_union_ref_t gpsdo_Payload_union_ref_t;
+typedef flatbuffers_union_vec_ref_t gpsdo_Payload_union_vec_ref_t;
+static gpsdo_Payload_union_ref_t gpsdo_Payload_clone(flatbuffers_builder_t *B, gpsdo_Payload_union_t t);
+
 static const flatbuffers_voffset_t __gpsdo_Status_required[] = { 0 };
 typedef flatbuffers_ref_t gpsdo_Status_ref_t;
 static gpsdo_Status_ref_t gpsdo_Status_clone(flatbuffers_builder_t *B, gpsdo_Status_table_t t);
 __flatbuffers_build_table(flatbuffers_, gpsdo_Status, 7)
+
+static const flatbuffers_voffset_t __gpsdo_Mat3x3_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_Mat3x3_ref_t;
+static gpsdo_Mat3x3_ref_t gpsdo_Mat3x3_clone(flatbuffers_builder_t *B, gpsdo_Mat3x3_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_Mat3x3, 1)
+
+static const flatbuffers_voffset_t __gpsdo_Vec3_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_Vec3_ref_t;
+static gpsdo_Vec3_ref_t gpsdo_Vec3_clone(flatbuffers_builder_t *B, gpsdo_Vec3_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_Vec3, 1)
+
+static const flatbuffers_voffset_t __gpsdo_Mat1x3_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_Mat1x3_ref_t;
+static gpsdo_Mat1x3_ref_t gpsdo_Mat1x3_clone(flatbuffers_builder_t *B, gpsdo_Mat1x3_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_Mat1x3, 1)
+
+static const flatbuffers_voffset_t __gpsdo_Mat3x1_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_Mat3x1_ref_t;
+static gpsdo_Mat3x1_ref_t gpsdo_Mat3x1_clone(flatbuffers_builder_t *B, gpsdo_Mat3x1_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_Mat3x1, 1)
+
+static const flatbuffers_voffset_t __gpsdo_kf_correction_debug_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_kf_correction_debug_ref_t;
+static gpsdo_kf_correction_debug_ref_t gpsdo_kf_correction_debug_clone(flatbuffers_builder_t *B, gpsdo_kf_correction_debug_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_kf_correction_debug, 7)
+
+static const flatbuffers_voffset_t __gpsdo_kf_state_debug_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_kf_state_debug_ref_t;
+static gpsdo_kf_state_debug_ref_t gpsdo_kf_state_debug_clone(flatbuffers_builder_t *B, gpsdo_kf_state_debug_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_kf_state_debug, 3)
+
+static const flatbuffers_voffset_t __gpsdo_kf_debug_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_kf_debug_ref_t;
+static gpsdo_kf_debug_ref_t gpsdo_kf_debug_clone(flatbuffers_builder_t *B, gpsdo_kf_debug_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_kf_debug, 9)
+
+static const flatbuffers_voffset_t __gpsdo_Message_required[] = { 0 };
+typedef flatbuffers_ref_t gpsdo_Message_ref_t;
+static gpsdo_Message_ref_t gpsdo_Message_clone(flatbuffers_builder_t *B, gpsdo_Message_table_t t);
+__flatbuffers_build_table(flatbuffers_, gpsdo_Message, 3)
 
 #define __gpsdo_Status_formal_args ,\
   float v0, float v1, float v2, float v3,\
@@ -30,6 +74,71 @@ __flatbuffers_build_table(flatbuffers_, gpsdo_Status, 7)
   v4, v5, v6
 static inline gpsdo_Status_ref_t gpsdo_Status_create(flatbuffers_builder_t *B __gpsdo_Status_formal_args);
 __flatbuffers_build_table_prolog(flatbuffers_, gpsdo_Status, gpsdo_Status_file_identifier, gpsdo_Status_type_identifier)
+
+#define __gpsdo_Mat3x3_formal_args , flatbuffers_float_vec_ref_t v0
+#define __gpsdo_Mat3x3_call_args , v0
+static inline gpsdo_Mat3x3_ref_t gpsdo_Mat3x3_create(flatbuffers_builder_t *B __gpsdo_Mat3x3_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_Mat3x3, gpsdo_Mat3x3_file_identifier, gpsdo_Mat3x3_type_identifier)
+
+#define __gpsdo_Vec3_formal_args , flatbuffers_float_vec_ref_t v0
+#define __gpsdo_Vec3_call_args , v0
+static inline gpsdo_Vec3_ref_t gpsdo_Vec3_create(flatbuffers_builder_t *B __gpsdo_Vec3_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_Vec3, gpsdo_Vec3_file_identifier, gpsdo_Vec3_type_identifier)
+
+#define __gpsdo_Mat1x3_formal_args , flatbuffers_float_vec_ref_t v0
+#define __gpsdo_Mat1x3_call_args , v0
+static inline gpsdo_Mat1x3_ref_t gpsdo_Mat1x3_create(flatbuffers_builder_t *B __gpsdo_Mat1x3_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_Mat1x3, gpsdo_Mat1x3_file_identifier, gpsdo_Mat1x3_type_identifier)
+
+#define __gpsdo_Mat3x1_formal_args , flatbuffers_float_vec_ref_t v0
+#define __gpsdo_Mat3x1_call_args , v0
+static inline gpsdo_Mat3x1_ref_t gpsdo_Mat3x1_create(flatbuffers_builder_t *B __gpsdo_Mat3x1_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_Mat3x1, gpsdo_Mat3x1_file_identifier, gpsdo_Mat3x1_type_identifier)
+
+#define __gpsdo_kf_correction_debug_formal_args ,\
+  float v0, float v1, float v2, float v3,\
+  float v4, float v5, flatbuffers_bool_t v6
+#define __gpsdo_kf_correction_debug_call_args ,\
+  v0, v1, v2, v3,\
+  v4, v5, v6
+static inline gpsdo_kf_correction_debug_ref_t gpsdo_kf_correction_debug_create(flatbuffers_builder_t *B __gpsdo_kf_correction_debug_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_kf_correction_debug, gpsdo_kf_correction_debug_file_identifier, gpsdo_kf_correction_debug_type_identifier)
+
+#define __gpsdo_kf_state_debug_formal_args , gpsdo_Vec3_ref_t v0, gpsdo_Mat3x3_ref_t v1, float v2
+#define __gpsdo_kf_state_debug_call_args , v0, v1, v2
+static inline gpsdo_kf_state_debug_ref_t gpsdo_kf_state_debug_create(flatbuffers_builder_t *B __gpsdo_kf_state_debug_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_kf_state_debug, gpsdo_kf_state_debug_file_identifier, gpsdo_kf_state_debug_type_identifier)
+
+#define __gpsdo_kf_debug_formal_args ,\
+  double v0, gpsdo_kf_state_debug_ref_t v1, gpsdo_kf_correction_debug_ref_t v2, gpsdo_Mat3x1_ref_t v3,\
+  gpsdo_Mat1x3_ref_t v4, gpsdo_Mat3x3_ref_t v5, float v6, uint32_t v7, uint32_t v8
+#define __gpsdo_kf_debug_call_args ,\
+  v0, v1, v2, v3,\
+  v4, v5, v6, v7, v8
+static inline gpsdo_kf_debug_ref_t gpsdo_kf_debug_create(flatbuffers_builder_t *B __gpsdo_kf_debug_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_kf_debug, gpsdo_kf_debug_file_identifier, gpsdo_kf_debug_type_identifier)
+
+#define __gpsdo_Message_formal_args , double v0, gpsdo_Payload_union_ref_t v2
+#define __gpsdo_Message_call_args , v0, v2
+static inline gpsdo_Message_ref_t gpsdo_Message_create(flatbuffers_builder_t *B __gpsdo_Message_formal_args);
+__flatbuffers_build_table_prolog(flatbuffers_, gpsdo_Message, gpsdo_Message_file_identifier, gpsdo_Message_type_identifier)
+
+static inline gpsdo_Payload_union_ref_t gpsdo_Payload_as_NONE(void)
+{ gpsdo_Payload_union_ref_t uref; uref.type = gpsdo_Payload_NONE; uref.value = 0; return uref; }
+static inline gpsdo_Payload_union_ref_t gpsdo_Payload_as_Status(gpsdo_Status_ref_t ref)
+{ gpsdo_Payload_union_ref_t uref; uref.type = gpsdo_Payload_Status; uref.value = ref; return uref; }
+static inline gpsdo_Payload_union_ref_t gpsdo_Payload_as_kf_debug(gpsdo_kf_debug_ref_t ref)
+{ gpsdo_Payload_union_ref_t uref; uref.type = gpsdo_Payload_kf_debug; uref.value = ref; return uref; }
+__flatbuffers_build_union_vector(flatbuffers_, gpsdo_Payload)
+
+static gpsdo_Payload_union_ref_t gpsdo_Payload_clone(flatbuffers_builder_t *B, gpsdo_Payload_union_t u)
+{
+    switch (u.type) {
+    case 1: return gpsdo_Payload_as_Status(gpsdo_Status_clone(B, (gpsdo_Status_table_t)u.value));
+    case 2: return gpsdo_Payload_as_kf_debug(gpsdo_kf_debug_clone(B, (gpsdo_kf_debug_table_t)u.value));
+    default: return gpsdo_Payload_as_NONE();
+    }
+}
 
 __flatbuffers_build_scalar_field(0, flatbuffers_, gpsdo_Status_phase_cnt, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
 __flatbuffers_build_scalar_field(1, flatbuffers_, gpsdo_Status_freq_error_hz, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_Status)
@@ -68,6 +177,228 @@ static gpsdo_Status_ref_t gpsdo_Status_clone(flatbuffers_builder_t *B, gpsdo_Sta
         return 0;
     }
     __flatbuffers_memoize_end(B, t, gpsdo_Status_end(B));
+}
+
+__flatbuffers_build_vector_field(0, flatbuffers_, gpsdo_Mat3x3_m, flatbuffers_float, float, gpsdo_Mat3x3)
+
+static inline gpsdo_Mat3x3_ref_t gpsdo_Mat3x3_create(flatbuffers_builder_t *B __gpsdo_Mat3x3_formal_args)
+{
+    if (gpsdo_Mat3x3_start(B)
+        || gpsdo_Mat3x3_m_add(B, v0)) {
+        return 0;
+    }
+    return gpsdo_Mat3x3_end(B);
+}
+
+static gpsdo_Mat3x3_ref_t gpsdo_Mat3x3_clone(flatbuffers_builder_t *B, gpsdo_Mat3x3_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_Mat3x3_start(B)
+        || gpsdo_Mat3x3_m_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_Mat3x3_end(B));
+}
+
+__flatbuffers_build_vector_field(0, flatbuffers_, gpsdo_Vec3_v, flatbuffers_float, float, gpsdo_Vec3)
+
+static inline gpsdo_Vec3_ref_t gpsdo_Vec3_create(flatbuffers_builder_t *B __gpsdo_Vec3_formal_args)
+{
+    if (gpsdo_Vec3_start(B)
+        || gpsdo_Vec3_v_add(B, v0)) {
+        return 0;
+    }
+    return gpsdo_Vec3_end(B);
+}
+
+static gpsdo_Vec3_ref_t gpsdo_Vec3_clone(flatbuffers_builder_t *B, gpsdo_Vec3_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_Vec3_start(B)
+        || gpsdo_Vec3_v_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_Vec3_end(B));
+}
+
+__flatbuffers_build_vector_field(0, flatbuffers_, gpsdo_Mat1x3_m, flatbuffers_float, float, gpsdo_Mat1x3)
+
+static inline gpsdo_Mat1x3_ref_t gpsdo_Mat1x3_create(flatbuffers_builder_t *B __gpsdo_Mat1x3_formal_args)
+{
+    if (gpsdo_Mat1x3_start(B)
+        || gpsdo_Mat1x3_m_add(B, v0)) {
+        return 0;
+    }
+    return gpsdo_Mat1x3_end(B);
+}
+
+static gpsdo_Mat1x3_ref_t gpsdo_Mat1x3_clone(flatbuffers_builder_t *B, gpsdo_Mat1x3_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_Mat1x3_start(B)
+        || gpsdo_Mat1x3_m_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_Mat1x3_end(B));
+}
+
+__flatbuffers_build_vector_field(0, flatbuffers_, gpsdo_Mat3x1_m, flatbuffers_float, float, gpsdo_Mat3x1)
+
+static inline gpsdo_Mat3x1_ref_t gpsdo_Mat3x1_create(flatbuffers_builder_t *B __gpsdo_Mat3x1_formal_args)
+{
+    if (gpsdo_Mat3x1_start(B)
+        || gpsdo_Mat3x1_m_add(B, v0)) {
+        return 0;
+    }
+    return gpsdo_Mat3x1_end(B);
+}
+
+static gpsdo_Mat3x1_ref_t gpsdo_Mat3x1_clone(flatbuffers_builder_t *B, gpsdo_Mat3x1_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_Mat3x1_start(B)
+        || gpsdo_Mat3x1_m_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_Mat3x1_end(B));
+}
+
+__flatbuffers_build_scalar_field(0, flatbuffers_, gpsdo_kf_correction_debug_z, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_correction_debug)
+__flatbuffers_build_scalar_field(1, flatbuffers_, gpsdo_kf_correction_debug_h_x, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_correction_debug)
+__flatbuffers_build_scalar_field(2, flatbuffers_, gpsdo_kf_correction_debug_y, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_correction_debug)
+__flatbuffers_build_scalar_field(3, flatbuffers_, gpsdo_kf_correction_debug_s, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_correction_debug)
+__flatbuffers_build_scalar_field(4, flatbuffers_, gpsdo_kf_correction_debug_mahalanobis_d2, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_correction_debug)
+__flatbuffers_build_scalar_field(5, flatbuffers_, gpsdo_kf_correction_debug_nis, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_correction_debug)
+__flatbuffers_build_scalar_field(6, flatbuffers_, gpsdo_kf_correction_debug_rejected, flatbuffers_bool, flatbuffers_bool_t, 1, 1, UINT8_C(0), gpsdo_kf_correction_debug)
+
+static inline gpsdo_kf_correction_debug_ref_t gpsdo_kf_correction_debug_create(flatbuffers_builder_t *B __gpsdo_kf_correction_debug_formal_args)
+{
+    if (gpsdo_kf_correction_debug_start(B)
+        || gpsdo_kf_correction_debug_z_add(B, v0)
+        || gpsdo_kf_correction_debug_h_x_add(B, v1)
+        || gpsdo_kf_correction_debug_y_add(B, v2)
+        || gpsdo_kf_correction_debug_s_add(B, v3)
+        || gpsdo_kf_correction_debug_mahalanobis_d2_add(B, v4)
+        || gpsdo_kf_correction_debug_nis_add(B, v5)
+        || gpsdo_kf_correction_debug_rejected_add(B, v6)) {
+        return 0;
+    }
+    return gpsdo_kf_correction_debug_end(B);
+}
+
+static gpsdo_kf_correction_debug_ref_t gpsdo_kf_correction_debug_clone(flatbuffers_builder_t *B, gpsdo_kf_correction_debug_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_kf_correction_debug_start(B)
+        || gpsdo_kf_correction_debug_z_pick(B, t)
+        || gpsdo_kf_correction_debug_h_x_pick(B, t)
+        || gpsdo_kf_correction_debug_y_pick(B, t)
+        || gpsdo_kf_correction_debug_s_pick(B, t)
+        || gpsdo_kf_correction_debug_mahalanobis_d2_pick(B, t)
+        || gpsdo_kf_correction_debug_nis_pick(B, t)
+        || gpsdo_kf_correction_debug_rejected_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_kf_correction_debug_end(B));
+}
+
+__flatbuffers_build_table_field(0, flatbuffers_, gpsdo_kf_state_debug_x, gpsdo_Vec3, gpsdo_kf_state_debug)
+__flatbuffers_build_table_field(1, flatbuffers_, gpsdo_kf_state_debug_p, gpsdo_Mat3x3, gpsdo_kf_state_debug)
+__flatbuffers_build_scalar_field(2, flatbuffers_, gpsdo_kf_state_debug_drift, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_state_debug)
+
+static inline gpsdo_kf_state_debug_ref_t gpsdo_kf_state_debug_create(flatbuffers_builder_t *B __gpsdo_kf_state_debug_formal_args)
+{
+    if (gpsdo_kf_state_debug_start(B)
+        || gpsdo_kf_state_debug_x_add(B, v0)
+        || gpsdo_kf_state_debug_p_add(B, v1)
+        || gpsdo_kf_state_debug_drift_add(B, v2)) {
+        return 0;
+    }
+    return gpsdo_kf_state_debug_end(B);
+}
+
+static gpsdo_kf_state_debug_ref_t gpsdo_kf_state_debug_clone(flatbuffers_builder_t *B, gpsdo_kf_state_debug_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_kf_state_debug_start(B)
+        || gpsdo_kf_state_debug_x_pick(B, t)
+        || gpsdo_kf_state_debug_p_pick(B, t)
+        || gpsdo_kf_state_debug_drift_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_kf_state_debug_end(B));
+}
+
+__flatbuffers_build_scalar_field(0, flatbuffers_, gpsdo_kf_debug_timestamp_s, flatbuffers_double, double, 8, 8, 0.0000000000000000, gpsdo_kf_debug)
+__flatbuffers_build_table_field(1, flatbuffers_, gpsdo_kf_debug_state, gpsdo_kf_state_debug, gpsdo_kf_debug)
+__flatbuffers_build_table_field(2, flatbuffers_, gpsdo_kf_debug_correction, gpsdo_kf_correction_debug, gpsdo_kf_debug)
+__flatbuffers_build_table_field(3, flatbuffers_, gpsdo_kf_debug_k, gpsdo_Mat3x1, gpsdo_kf_debug)
+__flatbuffers_build_table_field(4, flatbuffers_, gpsdo_kf_debug_h, gpsdo_Mat1x3, gpsdo_kf_debug)
+__flatbuffers_build_table_field(5, flatbuffers_, gpsdo_kf_debug_q, gpsdo_Mat3x3, gpsdo_kf_debug)
+__flatbuffers_build_scalar_field(6, flatbuffers_, gpsdo_kf_debug_r, flatbuffers_float, float, 4, 4, 0.00000000f, gpsdo_kf_debug)
+__flatbuffers_build_scalar_field(7, flatbuffers_, gpsdo_kf_debug_outlier_count, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0), gpsdo_kf_debug)
+__flatbuffers_build_scalar_field(8, flatbuffers_, gpsdo_kf_debug_kf_iteration, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0), gpsdo_kf_debug)
+
+static inline gpsdo_kf_debug_ref_t gpsdo_kf_debug_create(flatbuffers_builder_t *B __gpsdo_kf_debug_formal_args)
+{
+    if (gpsdo_kf_debug_start(B)
+        || gpsdo_kf_debug_timestamp_s_add(B, v0)
+        || gpsdo_kf_debug_state_add(B, v1)
+        || gpsdo_kf_debug_correction_add(B, v2)
+        || gpsdo_kf_debug_k_add(B, v3)
+        || gpsdo_kf_debug_h_add(B, v4)
+        || gpsdo_kf_debug_q_add(B, v5)
+        || gpsdo_kf_debug_r_add(B, v6)
+        || gpsdo_kf_debug_outlier_count_add(B, v7)
+        || gpsdo_kf_debug_kf_iteration_add(B, v8)) {
+        return 0;
+    }
+    return gpsdo_kf_debug_end(B);
+}
+
+static gpsdo_kf_debug_ref_t gpsdo_kf_debug_clone(flatbuffers_builder_t *B, gpsdo_kf_debug_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_kf_debug_start(B)
+        || gpsdo_kf_debug_timestamp_s_pick(B, t)
+        || gpsdo_kf_debug_state_pick(B, t)
+        || gpsdo_kf_debug_correction_pick(B, t)
+        || gpsdo_kf_debug_k_pick(B, t)
+        || gpsdo_kf_debug_h_pick(B, t)
+        || gpsdo_kf_debug_q_pick(B, t)
+        || gpsdo_kf_debug_r_pick(B, t)
+        || gpsdo_kf_debug_outlier_count_pick(B, t)
+        || gpsdo_kf_debug_kf_iteration_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_kf_debug_end(B));
+}
+
+__flatbuffers_build_scalar_field(0, flatbuffers_, gpsdo_Message_timestamp_s, flatbuffers_double, double, 8, 8, 0.0000000000000000, gpsdo_Message)
+__flatbuffers_build_union_field(2, flatbuffers_, gpsdo_Message_payload, gpsdo_Payload, gpsdo_Message)
+__flatbuffers_build_union_table_value_field(flatbuffers_, gpsdo_Message_payload, gpsdo_Payload, Status, gpsdo_Status)
+__flatbuffers_build_union_table_value_field(flatbuffers_, gpsdo_Message_payload, gpsdo_Payload, kf_debug, gpsdo_kf_debug)
+
+static inline gpsdo_Message_ref_t gpsdo_Message_create(flatbuffers_builder_t *B __gpsdo_Message_formal_args)
+{
+    if (gpsdo_Message_start(B)
+        || gpsdo_Message_timestamp_s_add(B, v0)
+        || gpsdo_Message_payload_add_value(B, v2)
+        || gpsdo_Message_payload_add_type(B, v2.type)) {
+        return 0;
+    }
+    return gpsdo_Message_end(B);
+}
+
+static gpsdo_Message_ref_t gpsdo_Message_clone(flatbuffers_builder_t *B, gpsdo_Message_table_t t)
+{
+    __flatbuffers_memoize_begin(B, t);
+    if (gpsdo_Message_start(B)
+        || gpsdo_Message_timestamp_s_pick(B, t)
+        || gpsdo_Message_payload_pick(B, t)) {
+        return 0;
+    }
+    __flatbuffers_memoize_end(B, t, gpsdo_Message_end(B));
 }
 
 #include "flatcc/flatcc_epilogue.h"

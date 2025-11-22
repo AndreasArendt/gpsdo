@@ -9,7 +9,7 @@
 #define FILTER_FILTER_H_
 
 #include <stdint.h>
-#include <stdbool.h>
+#include "flatbuf_defs.h"
 
 void filter_init(void);
 void filter_predict(float voltage_ctrl);
@@ -23,5 +23,6 @@ float filter_ema(float x, float prev_y, float alpha);
 float filter_get_phase_count();
 float filter_get_frequency_offset_Hz();
 float filter_get_frequency_drift_HzDs();
+void filter_get_kf_debug_flatbuf(KF_DebugSnapshot *dst);
 
 #endif /* FILTER_FILTER_H_ */

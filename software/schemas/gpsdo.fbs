@@ -1,5 +1,10 @@
 namespace gpsdo;
 
+attribute "length";
+
+// ------------------------------------------------------
+// Status message
+// ------------------------------------------------------
 table Status {  
   phase_cnt: float;
   freq_error_hz: float;
@@ -10,4 +15,70 @@ table Status {
   raw_counter_value : uint;
 }
 
-root_type Status;
+// ------------------------------------------------------
+// Matrix/vector helper types
+// ------------------------------------------------------
+table Mat3x3 {
+  m: [float] (length: 9); // row-major
+}
+
+table Vec3 {
+  v: [float] (length: 3);
+}
+
+table Mat1x3 {
+  m: [float] (length: 3);
+}
+
+table Mat3x1 {
+  m: [float] (length: 3);
+}
+
+// ------------------------------------------------------
+// Kalman Filter Debug Info
+// ------------------------------------------------------
+table kf_correction_debug {
+  z: float;
+  h_x: float;
+  y: float;
+  s: float;
+  mahalanobis_d2: float;
+  nis: float;
+  rejected: bool;
+}
+
+table kf_state_debug {
+  x: Vec3;
+  p: Mat3x3;
+  drift: float;
+}
+
+table kf_debug {
+  timestamp_s: double;
+
+  state: kf_state_debug;
+  correction: kf_correction_debug;
+
+  k: Mat3x1;
+  h: Mat1x3;
+  q: Mat3x3;
+  r: float;
+
+  outlier_count: uint32;
+  kf_iteration: uint32;
+}
+
+// ------------------------------------------------------
+// Wrapper: allow sending both Status or KF debug
+// ------------------------------------------------------
+union Payload {
+  Status,
+  kf_debug
+}
+
+table Message {
+  timestamp_s: double;
+  payload: Payload;
+}
+
+root_type Message;

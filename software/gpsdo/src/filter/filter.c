@@ -9,6 +9,11 @@
 #include <math.h>
 
 #define ARM_MATH_MATRIX_CHECK 1
+#define MAHAL_THRESHOLD   9.0f   // 3-sigma rejection
+
+static KF_DebugSnapshot kf_snapshot;
+static uint32_t kf_outlier_count = 0;
+static uint32_t kf_iteration_counter = 0;
 
 // Sampling interval (seconds)
 static const float T = 1.0f;
@@ -167,6 +172,20 @@ void filter_correct(float raw_count) {
 
 	// invS = 1 / S
 	float S_val = temp_1x1a_data[0];
+	float innov = y_data[0];
+
+	// Compute Mahalanobis D^2 = y^2 / S
+	float mahal_dist = (innov * innov) / S_val;
+
+	// Outlier detected — skip correction
+	if (mahal_dist > MAHAL_THRESHOLD) {
+		kf_outlier_count++;
+	    mat_copy(&X_pred, &X);
+
+	    filter_fill_debug(S_val, mahal_dist);
+	    return;
+	}
+
 	float invS = 1.0f / S_val;
 	temp_1x1a_data[0] = invS;   // reuse temp_1x1a as inv(S)
 
@@ -185,13 +204,44 @@ void filter_correct(float raw_count) {
 
 	// Copy back to P
 	mat_copy(&temp_3x3a, &P);
+
+    filter_fill_debug(S_val, mahal_dist);
 }
 
 void filter_step(float raw, float v) {
 	filter_predict(v);
 	filter_correct(raw);
+
+	kf_iteration_counter++;
 }
 
+
+void filter_fill_debug(float S_val, float mahal_dist) {
+    kf_snapshot.timestamp_s = 0.0f; //get_timestamp_seconds();
+
+    kf_snapshot.x[0] = X_data[0];
+    kf_snapshot.x[1] = X_data[1];
+    kf_snapshot.x[2] = X_data[2];
+    memcpy(kf_snapshot.P, P_data, sizeof(float)*9);
+
+    kf_snapshot.z  = z_data[0];
+    kf_snapshot.h_x = HX_data[0];
+    kf_snapshot.y = y_data[0];
+    kf_snapshot.S = S_val;
+    kf_snapshot.mahal_d2 = mahal_dist;
+    kf_snapshot.nis = mahal_dist;
+    kf_snapshot.rejected = (mahal_dist > MAHAL_THRESHOLD);
+
+    memcpy(kf_snapshot.K, K_data, sizeof(float)*3);
+    memcpy(kf_snapshot.H, H_data, sizeof(float)*3);
+    memcpy(kf_snapshot.Q, Q_data, sizeof(float)*9);
+    kf_snapshot.R = R_data[0];
+
+    kf_snapshot.outlier_count = kf_outlier_count;
+    kf_snapshot.iteration = kf_iteration_counter;
+}
+
+// ------------ GETTERS ------------
 float filter_get_phase_count(void) {
 	return X_data[0];
 }
@@ -202,4 +252,9 @@ float filter_get_frequency_offset_Hz(void) {
 
 float filter_get_frequency_drift_HzDs(void) {
 	return X_data[2];
+}
+
+void filter_get_kf_debug_flatbuf(KF_DebugSnapshot *dst)
+{
+    memcpy(dst, &kf_snapshot, sizeof(KF_DebugSnapshot));
 }

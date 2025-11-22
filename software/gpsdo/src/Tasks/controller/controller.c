@@ -15,9 +15,11 @@
 #define DAC_SYNC_PORT GPIOA
 #define DAC_SYNC_PIN GPIO_PIN_15
 
-static const float Kp = 0.1f;
-static const float Ki = 0.001f;
-static const float Kd = 0.0001f;
+static const float Kp = 0.03f;
+static const float Ki = 0.0001f;
+static const float Kd = 0.0f;
+
+static KF_DebugSnapshot kf_debug = {0};
 
 void DAC_Select() {
 	HAL_GPIO_WritePin(DAC_CS_GPIO_Port, DAC_CS_Pin, GPIO_PIN_RESET);
@@ -96,5 +98,7 @@ void controllerTask(void *argument) {
 
 		// sent flatbuf
 		flatbuf_send_status(phase_cnt, freq_off_Hz, freq_drift_HzDs, volt, get_volt_meas(), get_temperature(), delta);
+		filter_get_kf_debug_flatbuf(&kf_debug);
+		flatbuf_send_kf_debug(&kf_debug);
 	}
 }

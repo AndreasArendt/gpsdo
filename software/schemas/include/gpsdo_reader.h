@@ -23,6 +23,38 @@ typedef const struct gpsdo_Status_table *gpsdo_Status_table_t;
 typedef struct gpsdo_Status_table *gpsdo_Status_mutable_table_t;
 typedef const flatbuffers_uoffset_t *gpsdo_Status_vec_t;
 typedef flatbuffers_uoffset_t *gpsdo_Status_mutable_vec_t;
+typedef const struct gpsdo_Mat3x3_table *gpsdo_Mat3x3_table_t;
+typedef struct gpsdo_Mat3x3_table *gpsdo_Mat3x3_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_Mat3x3_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_Mat3x3_mutable_vec_t;
+typedef const struct gpsdo_Vec3_table *gpsdo_Vec3_table_t;
+typedef struct gpsdo_Vec3_table *gpsdo_Vec3_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_Vec3_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_Vec3_mutable_vec_t;
+typedef const struct gpsdo_Mat1x3_table *gpsdo_Mat1x3_table_t;
+typedef struct gpsdo_Mat1x3_table *gpsdo_Mat1x3_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_Mat1x3_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_Mat1x3_mutable_vec_t;
+typedef const struct gpsdo_Mat3x1_table *gpsdo_Mat3x1_table_t;
+typedef struct gpsdo_Mat3x1_table *gpsdo_Mat3x1_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_Mat3x1_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_Mat3x1_mutable_vec_t;
+typedef const struct gpsdo_kf_correction_debug_table *gpsdo_kf_correction_debug_table_t;
+typedef struct gpsdo_kf_correction_debug_table *gpsdo_kf_correction_debug_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_kf_correction_debug_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_kf_correction_debug_mutable_vec_t;
+typedef const struct gpsdo_kf_state_debug_table *gpsdo_kf_state_debug_table_t;
+typedef struct gpsdo_kf_state_debug_table *gpsdo_kf_state_debug_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_kf_state_debug_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_kf_state_debug_mutable_vec_t;
+typedef const struct gpsdo_kf_debug_table *gpsdo_kf_debug_table_t;
+typedef struct gpsdo_kf_debug_table *gpsdo_kf_debug_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_kf_debug_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_kf_debug_mutable_vec_t;
+typedef const struct gpsdo_Message_table *gpsdo_Message_table_t;
+typedef struct gpsdo_Message_table *gpsdo_Message_mutable_table_t;
+typedef const flatbuffers_uoffset_t *gpsdo_Message_vec_t;
+typedef flatbuffers_uoffset_t *gpsdo_Message_mutable_vec_t;
 #ifndef gpsdo_Status_file_identifier
 #define gpsdo_Status_file_identifier 0
 #endif
@@ -34,6 +66,102 @@ typedef flatbuffers_uoffset_t *gpsdo_Status_mutable_vec_t;
 #define gpsdo_Status_type_identifier "\x32\xa7\x52\x50"
 #ifndef gpsdo_Status_file_extension
 #define gpsdo_Status_file_extension "bin"
+#endif
+#ifndef gpsdo_Mat3x3_file_identifier
+#define gpsdo_Mat3x3_file_identifier 0
+#endif
+/* deprecated, use gpsdo_Mat3x3_file_identifier */
+#ifndef gpsdo_Mat3x3_identifier
+#define gpsdo_Mat3x3_identifier 0
+#endif
+#define gpsdo_Mat3x3_type_hash ((flatbuffers_thash_t)0xa9a8d126)
+#define gpsdo_Mat3x3_type_identifier "\x26\xd1\xa8\xa9"
+#ifndef gpsdo_Mat3x3_file_extension
+#define gpsdo_Mat3x3_file_extension "bin"
+#endif
+#ifndef gpsdo_Vec3_file_identifier
+#define gpsdo_Vec3_file_identifier 0
+#endif
+/* deprecated, use gpsdo_Vec3_file_identifier */
+#ifndef gpsdo_Vec3_identifier
+#define gpsdo_Vec3_identifier 0
+#endif
+#define gpsdo_Vec3_type_hash ((flatbuffers_thash_t)0xd8e5843)
+#define gpsdo_Vec3_type_identifier "\x43\x58\x8e\x0d"
+#ifndef gpsdo_Vec3_file_extension
+#define gpsdo_Vec3_file_extension "bin"
+#endif
+#ifndef gpsdo_Mat1x3_file_identifier
+#define gpsdo_Mat1x3_file_identifier 0
+#endif
+/* deprecated, use gpsdo_Mat1x3_file_identifier */
+#ifndef gpsdo_Mat1x3_identifier
+#define gpsdo_Mat1x3_identifier 0
+#endif
+#define gpsdo_Mat1x3_type_hash ((flatbuffers_thash_t)0x82b05560)
+#define gpsdo_Mat1x3_type_identifier "\x60\x55\xb0\x82"
+#ifndef gpsdo_Mat1x3_file_extension
+#define gpsdo_Mat1x3_file_extension "bin"
+#endif
+#ifndef gpsdo_Mat3x1_file_identifier
+#define gpsdo_Mat3x1_file_identifier 0
+#endif
+/* deprecated, use gpsdo_Mat3x1_file_identifier */
+#ifndef gpsdo_Mat3x1_identifier
+#define gpsdo_Mat3x1_identifier 0
+#endif
+#define gpsdo_Mat3x1_type_hash ((flatbuffers_thash_t)0xa7a8ce00)
+#define gpsdo_Mat3x1_type_identifier "\x00\xce\xa8\xa7"
+#ifndef gpsdo_Mat3x1_file_extension
+#define gpsdo_Mat3x1_file_extension "bin"
+#endif
+#ifndef gpsdo_kf_correction_debug_file_identifier
+#define gpsdo_kf_correction_debug_file_identifier 0
+#endif
+/* deprecated, use gpsdo_kf_correction_debug_file_identifier */
+#ifndef gpsdo_kf_correction_debug_identifier
+#define gpsdo_kf_correction_debug_identifier 0
+#endif
+#define gpsdo_kf_correction_debug_type_hash ((flatbuffers_thash_t)0x2636a8ce)
+#define gpsdo_kf_correction_debug_type_identifier "\xce\xa8\x36\x26"
+#ifndef gpsdo_kf_correction_debug_file_extension
+#define gpsdo_kf_correction_debug_file_extension "bin"
+#endif
+#ifndef gpsdo_kf_state_debug_file_identifier
+#define gpsdo_kf_state_debug_file_identifier 0
+#endif
+/* deprecated, use gpsdo_kf_state_debug_file_identifier */
+#ifndef gpsdo_kf_state_debug_identifier
+#define gpsdo_kf_state_debug_identifier 0
+#endif
+#define gpsdo_kf_state_debug_type_hash ((flatbuffers_thash_t)0x904decc3)
+#define gpsdo_kf_state_debug_type_identifier "\xc3\xec\x4d\x90"
+#ifndef gpsdo_kf_state_debug_file_extension
+#define gpsdo_kf_state_debug_file_extension "bin"
+#endif
+#ifndef gpsdo_kf_debug_file_identifier
+#define gpsdo_kf_debug_file_identifier 0
+#endif
+/* deprecated, use gpsdo_kf_debug_file_identifier */
+#ifndef gpsdo_kf_debug_identifier
+#define gpsdo_kf_debug_identifier 0
+#endif
+#define gpsdo_kf_debug_type_hash ((flatbuffers_thash_t)0x5430ea59)
+#define gpsdo_kf_debug_type_identifier "\x59\xea\x30\x54"
+#ifndef gpsdo_kf_debug_file_extension
+#define gpsdo_kf_debug_file_extension "bin"
+#endif
+#ifndef gpsdo_Message_file_identifier
+#define gpsdo_Message_file_identifier 0
+#endif
+/* deprecated, use gpsdo_Message_file_identifier */
+#ifndef gpsdo_Message_identifier
+#define gpsdo_Message_identifier 0
+#endif
+#define gpsdo_Message_type_hash ((flatbuffers_thash_t)0x48a1f2e7)
+#define gpsdo_Message_type_identifier "\xe7\xf2\xa1\x48"
+#ifndef gpsdo_Message_file_extension
+#define gpsdo_Message_file_extension "bin"
 #endif
 
 
@@ -53,6 +181,130 @@ __flatbuffers_define_scalar_field(3, gpsdo_Status, voltage_control_v, flatbuffer
 __flatbuffers_define_scalar_field(4, gpsdo_Status, voltage_measured_v, flatbuffers_float, float, 0.00000000f)
 __flatbuffers_define_scalar_field(5, gpsdo_Status, temperature_c, flatbuffers_float, float, 0.00000000f)
 __flatbuffers_define_scalar_field(6, gpsdo_Status, raw_counter_value, flatbuffers_uint32, uint32_t, UINT32_C(0))
+
+struct gpsdo_Mat3x3_table { uint8_t unused__; };
+
+static inline size_t gpsdo_Mat3x3_vec_len(gpsdo_Mat3x3_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_Mat3x3_table_t gpsdo_Mat3x3_vec_at(gpsdo_Mat3x3_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_Mat3x3_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_Mat3x3)
+
+__flatbuffers_define_vector_field(0, gpsdo_Mat3x3, m, flatbuffers_float_vec_t, 0)
+
+struct gpsdo_Vec3_table { uint8_t unused__; };
+
+static inline size_t gpsdo_Vec3_vec_len(gpsdo_Vec3_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_Vec3_table_t gpsdo_Vec3_vec_at(gpsdo_Vec3_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_Vec3_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_Vec3)
+
+__flatbuffers_define_vector_field(0, gpsdo_Vec3, v, flatbuffers_float_vec_t, 0)
+
+struct gpsdo_Mat1x3_table { uint8_t unused__; };
+
+static inline size_t gpsdo_Mat1x3_vec_len(gpsdo_Mat1x3_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_Mat1x3_table_t gpsdo_Mat1x3_vec_at(gpsdo_Mat1x3_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_Mat1x3_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_Mat1x3)
+
+__flatbuffers_define_vector_field(0, gpsdo_Mat1x3, m, flatbuffers_float_vec_t, 0)
+
+struct gpsdo_Mat3x1_table { uint8_t unused__; };
+
+static inline size_t gpsdo_Mat3x1_vec_len(gpsdo_Mat3x1_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_Mat3x1_table_t gpsdo_Mat3x1_vec_at(gpsdo_Mat3x1_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_Mat3x1_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_Mat3x1)
+
+__flatbuffers_define_vector_field(0, gpsdo_Mat3x1, m, flatbuffers_float_vec_t, 0)
+
+struct gpsdo_kf_correction_debug_table { uint8_t unused__; };
+
+static inline size_t gpsdo_kf_correction_debug_vec_len(gpsdo_kf_correction_debug_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_kf_correction_debug_table_t gpsdo_kf_correction_debug_vec_at(gpsdo_kf_correction_debug_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_kf_correction_debug_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_kf_correction_debug)
+
+__flatbuffers_define_scalar_field(0, gpsdo_kf_correction_debug, z, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(1, gpsdo_kf_correction_debug, h_x, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(2, gpsdo_kf_correction_debug, y, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(3, gpsdo_kf_correction_debug, s, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(4, gpsdo_kf_correction_debug, mahalanobis_d2, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(5, gpsdo_kf_correction_debug, nis, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(6, gpsdo_kf_correction_debug, rejected, flatbuffers_bool, flatbuffers_bool_t, UINT8_C(0))
+
+struct gpsdo_kf_state_debug_table { uint8_t unused__; };
+
+static inline size_t gpsdo_kf_state_debug_vec_len(gpsdo_kf_state_debug_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_kf_state_debug_table_t gpsdo_kf_state_debug_vec_at(gpsdo_kf_state_debug_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_kf_state_debug_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_kf_state_debug)
+
+__flatbuffers_define_table_field(0, gpsdo_kf_state_debug, x, gpsdo_Vec3_table_t, 0)
+__flatbuffers_define_table_field(1, gpsdo_kf_state_debug, p, gpsdo_Mat3x3_table_t, 0)
+__flatbuffers_define_scalar_field(2, gpsdo_kf_state_debug, drift, flatbuffers_float, float, 0.00000000f)
+
+struct gpsdo_kf_debug_table { uint8_t unused__; };
+
+static inline size_t gpsdo_kf_debug_vec_len(gpsdo_kf_debug_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_kf_debug_table_t gpsdo_kf_debug_vec_at(gpsdo_kf_debug_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_kf_debug_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_kf_debug)
+
+__flatbuffers_define_scalar_field(0, gpsdo_kf_debug, timestamp_s, flatbuffers_double, double, 0.0000000000000000)
+__flatbuffers_define_table_field(1, gpsdo_kf_debug, state, gpsdo_kf_state_debug_table_t, 0)
+__flatbuffers_define_table_field(2, gpsdo_kf_debug, correction, gpsdo_kf_correction_debug_table_t, 0)
+__flatbuffers_define_table_field(3, gpsdo_kf_debug, k, gpsdo_Mat3x1_table_t, 0)
+__flatbuffers_define_table_field(4, gpsdo_kf_debug, h, gpsdo_Mat1x3_table_t, 0)
+__flatbuffers_define_table_field(5, gpsdo_kf_debug, q, gpsdo_Mat3x3_table_t, 0)
+__flatbuffers_define_scalar_field(6, gpsdo_kf_debug, r, flatbuffers_float, float, 0.00000000f)
+__flatbuffers_define_scalar_field(7, gpsdo_kf_debug, outlier_count, flatbuffers_uint32, uint32_t, UINT32_C(0))
+__flatbuffers_define_scalar_field(8, gpsdo_kf_debug, kf_iteration, flatbuffers_uint32, uint32_t, UINT32_C(0))
+typedef uint8_t gpsdo_Payload_union_type_t;
+__flatbuffers_define_integer_type(gpsdo_Payload, gpsdo_Payload_union_type_t, 8)
+__flatbuffers_define_union(flatbuffers_, gpsdo_Payload)
+#define gpsdo_Payload_NONE ((gpsdo_Payload_union_type_t)UINT8_C(0))
+#define gpsdo_Payload_Status ((gpsdo_Payload_union_type_t)UINT8_C(1))
+#define gpsdo_Payload_kf_debug ((gpsdo_Payload_union_type_t)UINT8_C(2))
+
+static inline const char *gpsdo_Payload_type_name(gpsdo_Payload_union_type_t type)
+{
+    switch (type) {
+    case gpsdo_Payload_NONE: return "NONE";
+    case gpsdo_Payload_Status: return "Status";
+    case gpsdo_Payload_kf_debug: return "kf_debug";
+    default: return "";
+    }
+}
+
+static inline int gpsdo_Payload_is_known_type(gpsdo_Payload_union_type_t type)
+{
+    switch (type) {
+    case gpsdo_Payload_NONE: return 1;
+    case gpsdo_Payload_Status: return 1;
+    case gpsdo_Payload_kf_debug: return 1;
+    default: return 0;
+    }
+}
+
+
+struct gpsdo_Message_table { uint8_t unused__; };
+
+static inline size_t gpsdo_Message_vec_len(gpsdo_Message_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline gpsdo_Message_table_t gpsdo_Message_vec_at(gpsdo_Message_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(gpsdo_Message_table_t, vec, i, 0)
+__flatbuffers_table_as_root(gpsdo_Message)
+
+__flatbuffers_define_scalar_field(0, gpsdo_Message, timestamp_s, flatbuffers_double, double, 0.0000000000000000)
+__flatbuffers_define_union_field(flatbuffers_, 2, gpsdo_Message, payload, gpsdo_Payload, 0)
 
 
 #include "flatcc/flatcc_epilogue.h"

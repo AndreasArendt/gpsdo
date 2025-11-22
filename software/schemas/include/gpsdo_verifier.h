@@ -10,6 +10,23 @@
 #include "flatcc/flatcc_prologue.h"
 
 static int gpsdo_Status_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_Mat3x3_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_Vec3_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_Mat1x3_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_Mat3x1_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_kf_correction_debug_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_kf_state_debug_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_kf_debug_verify_table(flatcc_table_verifier_descriptor_t *td);
+static int gpsdo_Message_verify_table(flatcc_table_verifier_descriptor_t *td);
+
+static int gpsdo_Payload_union_verifier(flatcc_union_verifier_descriptor_t *ud)
+{
+    switch (ud->type) {
+    case 1: return flatcc_verify_union_table(ud, gpsdo_Status_verify_table); /* Status */
+    case 2: return flatcc_verify_union_table(ud, gpsdo_kf_debug_verify_table); /* kf_debug */
+    default: return flatcc_verify_ok;
+    }
+}
 
 static int gpsdo_Status_verify_table(flatcc_table_verifier_descriptor_t *td)
 {
@@ -62,6 +79,399 @@ static inline int gpsdo_Status_verify_as_root_with_type_hash(const void *buf, si
 static inline int gpsdo_Status_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
 {
     return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_Status_verify_table);
+}
+
+static int gpsdo_Mat3x3_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_vector_field(td, 0, 0, 4, 4, INT64_C(1073741823)) /* m */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_Mat3x3_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Mat3x3_identifier, &gpsdo_Mat3x3_verify_table);
+}
+
+static inline int gpsdo_Mat3x3_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Mat3x3_identifier, &gpsdo_Mat3x3_verify_table);
+}
+
+static inline int gpsdo_Mat3x3_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Mat3x3_type_identifier, &gpsdo_Mat3x3_verify_table);
+}
+
+static inline int gpsdo_Mat3x3_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Mat3x3_type_identifier, &gpsdo_Mat3x3_verify_table);
+}
+
+static inline int gpsdo_Mat3x3_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_Mat3x3_verify_table);
+}
+
+static inline int gpsdo_Mat3x3_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_Mat3x3_verify_table);
+}
+
+static inline int gpsdo_Mat3x3_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_Mat3x3_verify_table);
+}
+
+static inline int gpsdo_Mat3x3_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_Mat3x3_verify_table);
+}
+
+static int gpsdo_Vec3_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_vector_field(td, 0, 0, 4, 4, INT64_C(1073741823)) /* v */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_Vec3_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Vec3_identifier, &gpsdo_Vec3_verify_table);
+}
+
+static inline int gpsdo_Vec3_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Vec3_identifier, &gpsdo_Vec3_verify_table);
+}
+
+static inline int gpsdo_Vec3_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Vec3_type_identifier, &gpsdo_Vec3_verify_table);
+}
+
+static inline int gpsdo_Vec3_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Vec3_type_identifier, &gpsdo_Vec3_verify_table);
+}
+
+static inline int gpsdo_Vec3_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_Vec3_verify_table);
+}
+
+static inline int gpsdo_Vec3_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_Vec3_verify_table);
+}
+
+static inline int gpsdo_Vec3_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_Vec3_verify_table);
+}
+
+static inline int gpsdo_Vec3_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_Vec3_verify_table);
+}
+
+static int gpsdo_Mat1x3_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_vector_field(td, 0, 0, 4, 4, INT64_C(1073741823)) /* m */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_Mat1x3_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Mat1x3_identifier, &gpsdo_Mat1x3_verify_table);
+}
+
+static inline int gpsdo_Mat1x3_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Mat1x3_identifier, &gpsdo_Mat1x3_verify_table);
+}
+
+static inline int gpsdo_Mat1x3_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Mat1x3_type_identifier, &gpsdo_Mat1x3_verify_table);
+}
+
+static inline int gpsdo_Mat1x3_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Mat1x3_type_identifier, &gpsdo_Mat1x3_verify_table);
+}
+
+static inline int gpsdo_Mat1x3_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_Mat1x3_verify_table);
+}
+
+static inline int gpsdo_Mat1x3_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_Mat1x3_verify_table);
+}
+
+static inline int gpsdo_Mat1x3_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_Mat1x3_verify_table);
+}
+
+static inline int gpsdo_Mat1x3_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_Mat1x3_verify_table);
+}
+
+static int gpsdo_Mat3x1_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_vector_field(td, 0, 0, 4, 4, INT64_C(1073741823)) /* m */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_Mat3x1_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Mat3x1_identifier, &gpsdo_Mat3x1_verify_table);
+}
+
+static inline int gpsdo_Mat3x1_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Mat3x1_identifier, &gpsdo_Mat3x1_verify_table);
+}
+
+static inline int gpsdo_Mat3x1_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Mat3x1_type_identifier, &gpsdo_Mat3x1_verify_table);
+}
+
+static inline int gpsdo_Mat3x1_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Mat3x1_type_identifier, &gpsdo_Mat3x1_verify_table);
+}
+
+static inline int gpsdo_Mat3x1_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_Mat3x1_verify_table);
+}
+
+static inline int gpsdo_Mat3x1_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_Mat3x1_verify_table);
+}
+
+static inline int gpsdo_Mat3x1_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_Mat3x1_verify_table);
+}
+
+static inline int gpsdo_Mat3x1_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_Mat3x1_verify_table);
+}
+
+static int gpsdo_kf_correction_debug_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_field(td, 0, 4, 4) /* z */)) return ret;
+    if ((ret = flatcc_verify_field(td, 1, 4, 4) /* h_x */)) return ret;
+    if ((ret = flatcc_verify_field(td, 2, 4, 4) /* y */)) return ret;
+    if ((ret = flatcc_verify_field(td, 3, 4, 4) /* s */)) return ret;
+    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* mahalanobis_d2 */)) return ret;
+    if ((ret = flatcc_verify_field(td, 5, 4, 4) /* nis */)) return ret;
+    if ((ret = flatcc_verify_field(td, 6, 1, 1) /* rejected */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_kf_correction_debug_identifier, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_kf_correction_debug_identifier, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_kf_correction_debug_type_identifier, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_kf_correction_debug_type_identifier, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static inline int gpsdo_kf_correction_debug_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_kf_correction_debug_verify_table);
+}
+
+static int gpsdo_kf_state_debug_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_table_field(td, 0, 0, &gpsdo_Vec3_verify_table) /* x */)) return ret;
+    if ((ret = flatcc_verify_table_field(td, 1, 0, &gpsdo_Mat3x3_verify_table) /* p */)) return ret;
+    if ((ret = flatcc_verify_field(td, 2, 4, 4) /* drift */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_kf_state_debug_identifier, &gpsdo_kf_state_debug_verify_table);
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_kf_state_debug_identifier, &gpsdo_kf_state_debug_verify_table);
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_kf_state_debug_type_identifier, &gpsdo_kf_state_debug_verify_table);
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_kf_state_debug_type_identifier, &gpsdo_kf_state_debug_verify_table);
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_kf_state_debug_verify_table);
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_kf_state_debug_verify_table);
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_kf_state_debug_verify_table);
+}
+
+static inline int gpsdo_kf_state_debug_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_kf_state_debug_verify_table);
+}
+
+static int gpsdo_kf_debug_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_field(td, 0, 8, 8) /* timestamp_s */)) return ret;
+    if ((ret = flatcc_verify_table_field(td, 1, 0, &gpsdo_kf_state_debug_verify_table) /* state */)) return ret;
+    if ((ret = flatcc_verify_table_field(td, 2, 0, &gpsdo_kf_correction_debug_verify_table) /* correction */)) return ret;
+    if ((ret = flatcc_verify_table_field(td, 3, 0, &gpsdo_Mat3x1_verify_table) /* k */)) return ret;
+    if ((ret = flatcc_verify_table_field(td, 4, 0, &gpsdo_Mat1x3_verify_table) /* h */)) return ret;
+    if ((ret = flatcc_verify_table_field(td, 5, 0, &gpsdo_Mat3x3_verify_table) /* q */)) return ret;
+    if ((ret = flatcc_verify_field(td, 6, 4, 4) /* r */)) return ret;
+    if ((ret = flatcc_verify_field(td, 7, 4, 4) /* outlier_count */)) return ret;
+    if ((ret = flatcc_verify_field(td, 8, 4, 4) /* kf_iteration */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_kf_debug_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_kf_debug_identifier, &gpsdo_kf_debug_verify_table);
+}
+
+static inline int gpsdo_kf_debug_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_kf_debug_identifier, &gpsdo_kf_debug_verify_table);
+}
+
+static inline int gpsdo_kf_debug_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_kf_debug_type_identifier, &gpsdo_kf_debug_verify_table);
+}
+
+static inline int gpsdo_kf_debug_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_kf_debug_type_identifier, &gpsdo_kf_debug_verify_table);
+}
+
+static inline int gpsdo_kf_debug_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_kf_debug_verify_table);
+}
+
+static inline int gpsdo_kf_debug_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_kf_debug_verify_table);
+}
+
+static inline int gpsdo_kf_debug_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_kf_debug_verify_table);
+}
+
+static inline int gpsdo_kf_debug_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_kf_debug_verify_table);
+}
+
+static int gpsdo_Message_verify_table(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_field(td, 0, 8, 8) /* timestamp_s */)) return ret;
+    if ((ret = flatcc_verify_union_field(td, 2, 0, &gpsdo_Payload_union_verifier) /* payload */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int gpsdo_Message_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Message_identifier, &gpsdo_Message_verify_table);
+}
+
+static inline int gpsdo_Message_verify_as_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Message_identifier, &gpsdo_Message_verify_table);
+}
+
+static inline int gpsdo_Message_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, gpsdo_Message_type_identifier, &gpsdo_Message_verify_table);
+}
+
+static inline int gpsdo_Message_verify_as_typed_root_with_size(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, gpsdo_Message_type_identifier, &gpsdo_Message_verify_table);
+}
+
+static inline int gpsdo_Message_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &gpsdo_Message_verify_table);
+}
+
+static inline int gpsdo_Message_verify_as_root_with_identifier_and_size(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root_with_size(buf, bufsiz, fid, &gpsdo_Message_verify_table);
+}
+
+static inline int gpsdo_Message_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root(buf, bufsiz, thash, &gpsdo_Message_verify_table);
+}
+
+static inline int gpsdo_Message_verify_as_root_with_type_hash_and_size(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{
+    return flatcc_verify_table_as_typed_root_with_size(buf, bufsiz, thash, &gpsdo_Message_verify_table);
 }
 
 #include "flatcc/flatcc_epilogue.h"
