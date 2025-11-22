@@ -14,7 +14,7 @@
 static const float F_OSC_HZ = 10.0e6f;
 
 // OCXO downsampling counts
-static const float EXPECTED_CTR = 625000.0f;
+static const float EXPECTED_CTR = 5.0e6f;
 
 // DAC min/max voltages
 static const float V_Max = 3.0;

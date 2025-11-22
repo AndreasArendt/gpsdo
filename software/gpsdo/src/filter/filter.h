@@ -13,9 +13,9 @@
 
 void filter_init(void);
 void filter_predict(float voltage_ctrl);
-void filter_correct(float delta);
+void filter_correct(float raw_count);
 
-void filter_step(float delta, float voltage_ctrl);
+void filter_step(float raw_count, float voltage_ctrl);
 
 bool filter_pre_check(float delta);
 float filter_ema(float x, float prev_y, float alpha);

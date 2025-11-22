@@ -58,7 +58,7 @@ TIM_HandleTypeDef htim5;
 
 /* Definitions for tsk_controller */
 osThreadId_t tsk_controllerHandle;
-uint32_t controllerTaskBuffer[ 256 ];
+uint32_t controllerTaskBuffer[ 512 ];
 osStaticThreadDef_t controllerTaskControlBlock;
 const osThreadAttr_t tsk_controller_attributes = {
   .name = "tsk_controller",

@@ -103,12 +103,13 @@ def read_loop(ser, log):
                     log.info(f"Raw Counter: {raw_counter_value}")
 
                     timestamp = time.time() - start_time
+                    kf.predict()
                     X, P, k, y = kf.update(raw_counter_value)
 
                     phase_cnt_post = X[0]
                     freq_offset_post = X[1]
                     freq_drift_post = X[2]
-
+    
                     # Log to CSV
                     csv_writer.writerow([
                         timestamp,

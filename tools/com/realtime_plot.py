@@ -6,7 +6,8 @@ class RealtimePlotter:
         self.window_size = window_size
         
         # Separate data storage for each measurement type
-        self.timestamps = []
+        # Use deques with maxlen so the window automatically slides at `window_size`
+        self.timestamps = deque(maxlen=window_size)
 
         self.phase_cnt_post = deque(maxlen=window_size)
         self.freq_offset_post = deque(maxlen=window_size)
@@ -70,7 +71,7 @@ class RealtimePlotter:
         self.volt_set.append(volt_set)        
         self.volt_meas.append(volt_meas)        
 
-        x_data = list(self.timestamps)        
+        x_data = list(self.timestamps)
         
         self.line_phase_cnt.set_data(x_data, self.phase_cnt)
         self.line_phase_cnt_post.set_data(x_data, self.phase_cnt_post)

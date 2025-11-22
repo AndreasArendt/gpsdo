@@ -17,12 +17,12 @@ static volatile uint32_t PPS_delta = 0;
 
 void pps_init() {
 	HAL_TIM_Base_Start(&htim2);   // start high word first
-	HAL_TIM_Base_Start(&htim1);   // then low word (counts 625kHz)
+	HAL_TIM_Base_Start(&htim1);   // then low word (counts 5MHz)
 
 	HAL_TIM_IC_Start_IT(&htim5, TIM_CHANNEL_1);
 }
 
-static uint32_t Read625kHzCount(void) {
+static uint32_t ReadCount(void) {
 	uint16_t low;
 	uint32_t high;
 
@@ -37,7 +37,7 @@ static uint32_t Read625kHzCount(void) {
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM5) {
-		uint32_t now = Read625kHzCount();
+		uint32_t now = ReadCount();
 
 		if (last_PPS != 0) {
 			PPS_delta = now - last_PPS;
