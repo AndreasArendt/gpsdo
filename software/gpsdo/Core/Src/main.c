@@ -58,7 +58,7 @@ TIM_HandleTypeDef htim5;
 
 /* Definitions for tsk_controller */
 osThreadId_t tsk_controllerHandle;
-uint32_t controllerTaskBuffer[ 1024 ];
+uint32_t controllerTaskBuffer[ 2048 ];
 osStaticThreadDef_t controllerTaskControlBlock;
 const osThreadAttr_t tsk_controller_attributes = {
   .name = "tsk_controller",
@@ -70,7 +70,7 @@ const osThreadAttr_t tsk_controller_attributes = {
 };
 /* Definitions for tsk_usb */
 osThreadId_t tsk_usbHandle;
-uint32_t usbTaskBuffer[ 512 ];
+uint32_t usbTaskBuffer[ 2048 ];
 osStaticThreadDef_t usbTaskControlBlock;
 const osThreadAttr_t tsk_usb_attributes = {
   .name = "tsk_usb",
