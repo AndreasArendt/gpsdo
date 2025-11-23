@@ -11,7 +11,8 @@
 #include "hal.h"
 #include "usb.h"
 #include "flatbuf_defs.h"
-#include <string.h> // for memcpy
+#include <string.h>
+#include <stdlib.h>
 
 static void flatbuf_send(uint16_t msg_id, const uint8_t *payload,
 		size_t payload_len) {
@@ -146,6 +147,7 @@ void flatbuf_send_kf_debug(const KF_DebugSnapshot *kf) {
 	void *buf = flatcc_builder_finalize_buffer(&builder, &msg_size);
 
 	flatbuf_send(FLATBUF_MSG_KF_DEBUG, (const uint8_t*) buf, msg_size);
+	free(buf);
 
 	flatcc_builder_clear(&builder);
 }
@@ -178,6 +180,7 @@ void flatbuf_send_status(float phase_cnt, float freq_error, float freq_drift,
 	void *buf = flatcc_builder_finalize_buffer(&builder, &msg_size);
 
 	flatbuf_send(FLATBUF_MSG_STATUS, (const uint8_t*) buf, msg_size);
+	free(buf);
 
 	flatcc_builder_clear(&builder);
 }
