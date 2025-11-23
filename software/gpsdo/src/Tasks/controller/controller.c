@@ -16,7 +16,7 @@
 #define DAC_SYNC_PORT GPIOA
 #define DAC_SYNC_PIN GPIO_PIN_15
 
-static const float Kp = 0.002f;
+static const float Kp = 0.0025f;
 static const float Ki = 0.00001f;
 static const float Kd = 0.0f;
 
