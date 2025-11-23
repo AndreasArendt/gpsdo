@@ -14,11 +14,12 @@ This project aims to create an **open-source and affordable** GPSDO from scratch
 
 # Status
 🚧 Under Construction
-
-The first hardware prototype is currently being tested; all findings are documented in Issue #1
+* The first hardware prototype is currently being tested; all findings are documented in Issue #1
+* A Kalman-Filter to estimate `phase`, `frequency_offset` and `frequency_drift` has been implemented
+* A PI-Controller is running the GPSDO closed loop
+* Flatbuf Messages are implemented to ensure easy-to-extend communication to a host system
 
 # Roadmap
-
 ✅ Improve hardware based on findings from V2 prototype  
 🔄 Integrate the GNSS receiver on-board for a fully standalone GPSDO  
 ⚙️ Fine-tune the control loop and filtering algorithms  
