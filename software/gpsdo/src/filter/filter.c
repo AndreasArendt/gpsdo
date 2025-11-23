@@ -83,7 +83,7 @@ static inline void mat_copy(const arm_matrix_instance_f32 *src,
 void filter_init(void) {
 	// ---- Process noise Q (constant-acceleration style) ----
 	// Tunable scalar q: bigger -> filter responds faster, noisier
-	const float q = 1e-5f;
+	const float q = 1e-7f;
 
 	Q_data[0] = q * T * T * T * T * T / 20.0f;
 	Q_data[1] = q * T * T * T * T / 8.0f;

@@ -12,7 +12,7 @@ class KalmanFilter:
                  T=1.0, 
                  f_osc=10_000_000.0, 
                  expected_count=5_000_000.0, 
-                 q=1e-5,
+                 q=1e-7,
                  sigma_phase = 0.5/np.sqrt(3),
                  mahal_thd = 9.0):
         self.T = T
@@ -71,9 +71,9 @@ class KalmanFilter:
         mahal_dist = (y**2) / S
 
 	    # Outlier detected — skip correction
-        if mahal_dist > self.mahal_thd:
-            self.outlier_cnt += 1
-            return self.x, self.P, K, y
+        # if mahal_dist > self.mahal_thd:
+        #     self.outlier_cnt += 1
+        #     return self.x, self.P, K, y
 
         # State update
         self.x = self.x + K @ y
