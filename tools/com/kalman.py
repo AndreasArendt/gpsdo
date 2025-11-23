@@ -13,10 +13,14 @@ class KalmanFilter:
                  f_osc=10_000_000.0, 
                  expected_count=5_000_000.0, 
                  q=1e-5,
-                 sigma_phase = 0.5/np.sqrt(3)):
+                 sigma_phase = 0.5/np.sqrt(3),
+                 mahal_thd = 9.0):
         self.T = T
         self.f_osc = f_osc
         self.expected_count = expected_count
+        self.mahal_thd = mahal_thd
+
+        self.outlier_cnt = 0
 
         r = self.expected_count / (self.f_osc * self.T)
         
@@ -62,6 +66,14 @@ class KalmanFilter:
 
         z = raw_count - self.expected_count
         y = z - (self.H @ self.x)
+
+    	# Compute Mahalanobis D^2 = y^2 / S
+        mahal_dist = (y**2) / S
+
+	    # Outlier detected — skip correction
+        if mahal_dist > self.mahal_thd:
+            self.outlier_cnt += 1
+            return self.x, self.P, K, y
 
         # State update
         self.x = self.x + K @ y

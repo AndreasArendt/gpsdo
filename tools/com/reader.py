@@ -33,10 +33,7 @@ def read_loop(ser, log):
         'voltage_control_v',
         'voltage_measured_v',
         'temperature_c',
-        'raw_counter_value',
-        'filtered_freq_offset_hz',
-        'filtered_drift_hz_s',
-        'phase_cnt_post'
+        'raw_counter_value'        
     ])
     csv_file.flush()
 
@@ -88,10 +85,7 @@ def read_loop(ser, log):
                         voltage_control_v,
                         voltage_measured_v,
                         temperature_c,
-                        raw_counter_value,
-                        freq_offset_post,
-                        freq_drift_post,
-                        phase_cnt_post
+                        raw_counter_value
                     ])
                     csv_file.flush()
 
