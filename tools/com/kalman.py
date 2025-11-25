@@ -71,9 +71,9 @@ class KalmanFilter:
         mahal_dist = (y**2) / S
 
 	    # Outlier detected — skip correction
-        # if mahal_dist > self.mahal_thd:
-        #     self.outlier_cnt += 1
-        #     return self.x, self.P, K, y
+        if mahal_dist > self.mahal_thd:
+            self.outlier_cnt += 1
+            return self.x, self.P, K, y
 
         # State update
         self.x = self.x + K @ y

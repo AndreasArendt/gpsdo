@@ -89,6 +89,7 @@ void controllerTask(void *argument) {
 	static bool first_run = true;
 
 	filter_init();
+	DAC_SetVoltage(volt);
 
 	while (1) {
 		osSemaphoreAcquire(xPPSSemaphoreHandle, osWaitForever);
@@ -115,7 +116,7 @@ void controllerTask(void *argument) {
 		prev_freq = freq_off_Hz;
 
 		volt = control(-phase_cnt, -freq_off_Hz, -freq_drift_HzDs);
-		DAC_SetVoltage(volt);
+		//DAC_SetVoltage(volt);
 
 		// sent flatbuf
 		flatbuf_send_status(phase_cnt, freq_off_Hz, freq_drift_HzDs, volt,

@@ -4,7 +4,9 @@ import kalman
 import pandas as pd
 
 #filename = r"logs/20251123_102614.csv"
-filename = r"logs/20251123_150118.csv"
+#filename = r"logs/20251123_150118.csv"
+#filename = r"logs/20251123_171510.csv"
+filename = r"logs/20251125_075229.csv"
 
 phase = []
 freq_offset = [] 
@@ -83,9 +85,11 @@ plt.legend()
 
 #############################################
 plt.subplot(4, 1, 4)
-plt.plot(df["raw_counter_value"], label="Raw Counts")
-#plt.plot(df["voltage_control_v"], label="V control")
-#plt.plot(df["voltage_measured_v"], label="V meas")
+#plt.plot(df["raw_counter_value"], label="Raw Counts")
+plt.plot(df["voltage_control_v"], label="V control")
+plt.plot(df["voltage_measured_v"], label="V meas")
 plt.legend()
 
 plt.show()
+
+df["freq_error_hz"].to_csv("./freq_error_hz.csv")

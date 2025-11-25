@@ -1,24 +1,17 @@
 import allantools
 import numpy as np
 import matplotlib.pyplot as plt
-import re
+import pandas as pd
 
-filename = r"reader1.log"
+filename = r"freq_error_hz.csv"
 
-delta = np.array([])
+F_OSC =  10_000_000.0
 
-with open(filename) as file:
-        while line := file.readline():
-            _delta_re = re.compile(r"measurement=(\d+(?:\.\d+)?)", re.IGNORECASE)
-            m = _delta_re.search(line.strip())
+df = pd.read_csv(filename)
+freq_error_hz = df["freq_error_hz"] / F_OSC
 
-            if m:
-                delta = np.append(delta, float(m.group(1)) * 1/625000)
+(taus, adevs, errors, ns) = allantools.oadev(freq_error_hz)
 
-(taus, adevs, errors, ns) = allantools.oadev(delta)
-
-t = np.logspace(0, 3, 50)  # tau values from 1 to 1000
-r = 1  # sample rate in Hz of the input data
-(t2, ad, ade, adn) = allantools.oadev(delta, rate=r, data_type="freq", taus=t)  # Compute the overlapping ADEV
-fig = plt.loglog(t2, ad) # Plot the results
+(t2, ad, ade, adn) = allantools.oadev(freq_error_hz, rate=1.0, data_type="freq")
+fig = plt.loglog(t2, ad)
 plt.show()
